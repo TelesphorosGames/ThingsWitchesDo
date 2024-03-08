@@ -9,7 +9,7 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play Things Witches Do - Rough 1 ( CONCEPT ).</tw-noscript></noscript></tw-story>
-<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="57" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
+<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="1" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -425,7 +425,29 @@ $DialogTransition(dialog: bind _SpellBookAction, &quot;You realized that the boo
 
 (if:_SpellBookAction is &quot;Read the book.&quot;)[(go-to:&quot;ReadBook1&quot;)]
 (else:)[(goto: &quot;DidNotReadBook1&quot;)]
-</tw-passagedata><tw-passagedata pid="6" name="Farmhand Upbringing" tags="" position="1400,300" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="INSIDE HOME" tags="" position="1100,800" size="200,200">
+</tw-passagedata><tw-passagedata pid="6" name="Farmhand Upbringing" tags="" position="1400,300" size="100,100">On the farm, you discovered a hidden patch of unusual plants. What did you do?
+
+(link: &quot;Harvested them for medicinal use.&quot;)[]
+(link: &quot;Avoided them, fearing they might be dangerous.&quot;)[]
+(link: &quot;Consulted the farm&#39;s elders about the plants.&quot;)[]
+
+During a storm, you discovered an injured magical creature on the farm. How did you react?
+
+(link: &quot;Immediately tried to heal and befriend it.&quot;)[]
+(link: &quot;Reported it to the farm&#39;s elders for guidance.&quot;)[]
+(link: &quot;Kept your distance, unsure of its intentions.&quot;)[]
+
+You found an old book about plant magic in the farm&#39;s attic. What did you do with it?
+
+(link: &quot;Read it eagerly, eager to learn plant magic.&quot;)[]
+(link: &quot;Stored it away, respecting the elders&#39; property.&quot;)[]
+(link: &quot;Avoided it, feeling uneasy about magic.&quot;)[]
+
+A neighboring farm accuses your farm of using forbidden magic. How do you respond?
+
+(link: &quot;Confront them and deny the accusations.&quot;)[]
+(link: &quot;Seek evidence to disprove the accusations.&quot;)[]
+(link: &quot;Keep a low profile and avoid conflict.&quot;)[]</tw-passagedata><tw-passagedata pid="7" name="INSIDE HOME" tags="" position="1100,800" size="200,200">
 
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cabin&quot;)]
 
@@ -666,6 +688,13 @@ There are books here that are worth reading.
 (set: num-type $GameChapter to 1)
 (set: const-type $Antagonist to (either: &quot;Melvin&quot;,&quot;Glen&quot;,&quot;Enora&quot;,&quot;Whiskers&quot;,&quot;Pritchard&quot;))
 (set: const-type $GuiltyOfWitchcraft to (either: &quot;Glen&quot;, &quot;Enora&quot;, &quot;Michael&quot;, &quot;Sheena&quot;, &quot;Davis&quot;))
+
+&lt;!--NPC--&gt;
+
+(set: $NPCSheet to (dm: &quot;Name&quot;, str, &quot;HP&quot;, num, &quot;IsWitch&quot;, bool, &quot;Favor&quot;, num, &quot;QuestsComplete&quot;, (a:bool)))
+
+
+
 
 &lt;!-- ADDITIONAL FUNCTIONS --&gt;
 
@@ -1133,7 +1162,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 ]
 
 
-</tw-passagedata><tw-passagedata pid="56" name="INTRO" tags="" position="1200,100" size="100,100">(align:&quot;===&gt;&lt;=&quot;)+(box:&quot;X&quot;)[=
+(goto:&quot;Career Choice&quot;)</tw-passagedata><tw-passagedata pid="56" name="INTRO" tags="" position="1200,100" size="100,100">(align:&quot;===&gt;&lt;=&quot;)+(box:&quot;X&quot;)[=
 (set: $PROLOGUE_NAME to (either: &quot;ORIGINS&quot;, &quot;DISCOVERED FATE&quot;,&quot;DESTINY&quot;,&quot;PROPHECY&quot;, &quot;AWAKENING&quot;, &quot;FORGOTTEN LEGACY&quot;, &quot;COSMIC TRUTH&quot;, &quot;ECHOES&quot;, &quot;UNBOUND REALMS&quot;))
 (t8n:&#39;fade&#39;)+(text-size: 2)+(text-rotate-x:38)+(text-style:&quot;sway&quot;)[PROLOGUE:]&lt;br&gt;THE&lt;br&gt;
 (enchant: ?O&#39;s chars, via (t8n-delay:pos * 350) + (t8n:&#39;fade&#39;))[(text-color: orange)+(text-size: 5)+(text-style: &quot;shadow&quot;, &quot;condense&quot;)[$PROLOGUE_NAME]&lt;O|]
@@ -1143,7 +1172,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 
 
 
-</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,500" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
+</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,400" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
 {
 (align:&quot;=&gt;&lt;=&quot;)+(box:&quot;X&quot;, 6)[[After deciding not to read the book of ancient knowledge,` ` ]&lt;QuestionSpace|[you continued your journey, exploring various pursuits in search of your true calling.]&lt;AnswerSpace|]}
 {[]&lt;EFFECTSPOT|}
