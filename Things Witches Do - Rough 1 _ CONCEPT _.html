@@ -9,7 +9,7 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play Things Witches Do - Rough 1 ( CONCEPT ).</tw-noscript></noscript></tw-story>
-<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="1" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
+<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="57" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -413,7 +413,7 @@ $DialogTransition(dialog: bind $EarlyWork, &quot;When you could work, you found 
 (if: $EarlyWork is &quot;Librarian&quot;)[	(set: $Clever to $it +4)   (go-to: &quot;Librarian Upbringing&quot;)]
 (else-if: $EarlyWork is &quot;Farmhand&quot;)[	(set: $GreenMagick to it +4)    (go-to: &quot;Farmhand Upbringing&quot;)]
 (else-if: $EarlyWork is &quot;Tailor&quot;)[	(set: $Sneaky to it +2, $Clever to it +2) (go-to: &quot;Tailor Upbringing&quot;) ]
-</tw-passagedata><tw-passagedata pid="5" name="Librarian Upbringing" tags="nofooter" position="1250,300" size="100,100">$DialogTransition(dialog: bind $SpellBookFound, &quot;One day, at work, you stumbled upon...&quot;, &quot;A white book.&quot;, &quot;A black book.&quot;)
+</tw-passagedata><tw-passagedata pid="5" name="Librarian Upbringing" tags="nofooter" position="1300,300" size="100,100">$DialogTransition(dialog: bind $SpellBookFound, &quot;One day, at work, you stumbled upon...&quot;, &quot;A white book.&quot;, &quot;A black book.&quot;)
 
 (if: $SpellBookFound is &quot;A white book.&quot;)[
 	(set: $WhiteMagick to $WhiteMagick+6)
@@ -423,11 +423,8 @@ $DialogTransition(dialog: bind $EarlyWork, &quot;When you could work, you found 
 
 $DialogTransition(dialog: bind _SpellBookAction, &quot;You realized that the book contained a great deal of hidden knowledge. Knowing this, you...&quot;, &quot;Read the book.&quot;, &quot;Didn&#39;t read the book.&quot;)
 
-
-
-(if:_SpellBookAction is &quot;Read the book.&quot;)(go-to:&quot;ReadBook1&quot;)
-(else:)(goto: &quot;DidNotReadBook1&quot;)
-
+(if:_SpellBookAction is &quot;Read the book.&quot;)[(go-to:&quot;ReadBook1&quot;)]
+(else:)[(goto: &quot;DidNotReadBook1&quot;)]
 </tw-passagedata><tw-passagedata pid="6" name="Farmhand Upbringing" tags="" position="1400,300" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="INSIDE HOME" tags="" position="1100,800" size="200,200">
 
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cabin&quot;)]
@@ -435,7 +432,7 @@ $DialogTransition(dialog: bind _SpellBookAction, &quot;You realized that the boo
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Cabin&quot;)]
 (if: $PlaceOfResidence is &quot;Cave&quot;) (goto: &quot;Cave&quot;)</tw-passagedata><tw-passagedata pid="8" name="Outside Home" tags="" position="700,700" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Outside Cabin&quot;)]
-(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1550,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="700,900" size="100,100">($CYCLE_GAME_TIME:)
+(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1500,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="700,900" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cave&quot;)]
 
 (if: $PlaceOfResidence is &quot;Cave&quot;)[
@@ -644,6 +641,7 @@ There are books here that are worth reading.
 
 (set: str-type $PlaceOfResidence to &quot;Cabin&quot;)
 (set: num-type $Charming to 13, num-type $Clever to 13, num-type $Sneaky to 13, num-type $Wealthy to 13, num-type $Attractive to 13)
+(set: $CharacterName to &quot;Davis&quot;)
 
 &lt;!-- INVENTORY --&gt;
 
@@ -1104,42 +1102,38 @@ Feel free to mix and match these elements to create unique spell names and ancie
 &quot;A spell of protection, hoping to shield yourself and others.&quot;,
 &quot;A spell of revelation, seeking hidden truths and forbidden knowledge.&quot;)
 
-
 (t8n: &quot;fade&quot;)+(t8n-time: 3s)(dialog: bind _ConcealingBook, &quot;To keep the forbidden book a secret, you chose to...&quot;,
 &quot;Craft an intricate hidden compartment to conceal the book securely.&quot;,
 &quot;Enchant the book with an illusion, making it appear mundane to prying eyes.&quot;)
-
 
 (t8n: &quot;fade&quot;)+(t8n-time: 3s)(dialog: bind _DealingTemptation,&quot;When faced with the temptation to use the book for personal gain, you...&quot;,
 &quot;Resisted, choosing a path of morality and restraint.&quot;,
 &quot;Succumbed, embracing the power and consequences that came with it.&quot;)
 
-
 (t8n: &quot;fade&quot;)+(t8n-time: 3s)(dialog: bind _SharingForbiddenKnowledge,&quot;Once, when someone you trusted sought knowledge from the forbidden book, you...&quot;,
 &quot;Refused, believing the risks are too great for others to bear.&quot;,
 &quot;Shared, believing that certain individuals can handle the responsibility.&quot;)
 
-
-(t8n: &quot;fade&quot;)+(t8n-time: 3s)(dialog: bind _Confronting,&quot;In a dire situation where the forbidden knowledge could save lives, you would...&quot;
+(t8n: &quot;fade&quot;)+(t8n-time: 3s)(dialog: bind _Confronting,&quot;In a dire situation where the forbidden knowledge could save lives, you decided to...&quot;
 &quot;Use the book cautiously, balancing the risks against the potential benefits.&quot;,
 &quot;Embrace the book&#39;s power, prioritizing immediate results over long-term consequences.&quot;)
 
-$DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the book for some time, you finally made a firm deciscion about the book&#39;s fate...&quot;, &quot;You kept the book.&quot;, &quot;You buried the book.&quot;, &quot;You burned the book.&quot;)
+$DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the book turned to obsession, you finally made a firm deciscion about the book&#39;s fate...&quot;, &quot;You kept the book.&quot;, &quot;You buried the book.&quot;, &quot;You burned the book.&quot;)
 &lt;!--
 (go-to:&quot;Choose Place of Residence&quot;)--&gt;
-</tw-passagedata><tw-passagedata pid="55" name="DidNotReadBook1" tags="" position="1150,300" size="100,100">(set: $Clever to it + 5)
+</tw-passagedata><tw-passagedata pid="55" name="DidNotReadBook1" tags="" position="1200,300" size="100,100">(set: $Clever to it + 5)
 (set: $Sneaky to $Sneaky +6)
 (set: $Wealthy to it +2)
-
 (dialog: bind $TheBooksFate, &quot;Even though you never learned the book&#39;s secrets,&quot; , &quot;You kept the book.&quot;, &quot;You buried the book.&quot;, &quot;You burned the book.&quot;)
-
 (if: $TheBooksFate is &quot;You kept the book.&quot;)[
 	(set: $HasAncientBook to true)
 	(set: $Sneaky to it +4) 
 ](else:) [(set: $HasAncientBook to false)
 (set: $Clever to it +4)
 ]
-</tw-passagedata><tw-passagedata pid="56" name="INTRO" tags="" position="1300,100" size="100,100">(align:&quot;===&gt;&lt;=&quot;)+(box:&quot;X&quot;)[=
+
+
+</tw-passagedata><tw-passagedata pid="56" name="INTRO" tags="" position="1200,100" size="100,100">(align:&quot;===&gt;&lt;=&quot;)+(box:&quot;X&quot;)[=
 (set: $PROLOGUE_NAME to (either: &quot;ORIGINS&quot;, &quot;DISCOVERED FATE&quot;,&quot;DESTINY&quot;,&quot;PROPHECY&quot;, &quot;AWAKENING&quot;, &quot;FORGOTTEN LEGACY&quot;, &quot;COSMIC TRUTH&quot;, &quot;ECHOES&quot;, &quot;UNBOUND REALMS&quot;))
 (t8n:&#39;fade&#39;)+(text-size: 2)+(text-rotate-x:38)+(text-style:&quot;sway&quot;)[PROLOGUE:]&lt;br&gt;THE&lt;br&gt;
 (enchant: ?O&#39;s chars, via (t8n-delay:pos * 350) + (t8n:&#39;fade&#39;))[(text-color: orange)+(text-size: 5)+(text-style: &quot;shadow&quot;, &quot;condense&quot;)[$PROLOGUE_NAME]&lt;O|]
@@ -1149,6 +1143,58 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 
 
 
+</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,500" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
+{
+(align:&quot;=&gt;&lt;=&quot;)+(box:&quot;X&quot;, 6)[[After deciding not to read the book of ancient knowledge,` ` ]&lt;QuestionSpace|[you continued your journey, exploring various pursuits in search of your true calling.]&lt;AnswerSpace|]}
+{[]&lt;EFFECTSPOT|}
+{(box:&quot;X&quot;, 4)[
+[
+|=
+||==
+(link-rerun: &quot;Alchemy&quot;)[(set: $CareerChoice to &quot;alchemy&quot;)_RERUN]
+(link-rerun: &quot;Herbology&quot;)[(set: $CareerChoice to &quot;herbology&quot;)_RERUN]
+(link-rerun: &quot;Astrology&quot;)[(set: $CareerChoice to &quot;astrology&quot;)_RERUN]
+=||==
+(link-rerun: &quot;Smithing&quot;)[(set: $CareerChoice to &quot;smithing&quot;)_RERUN]
+(link-rerun: &quot;Cartography&quot;)[(set: $CareerChoice to &quot;cartography&quot;)_RERUN]
+(link-rerun: &quot;Merchant&quot;)[(set: $CareerChoice to &quot;merchant&quot;)_RERUN]
+=||==
+(link-rerun: &quot;Scribe&quot;)[(set: $CareerChoice to &quot;scribe&quot;)_RERUN]
+(link-rerun: &quot;Enchanting&quot;)[(set: $CareerChoice to &quot;enchanting&quot;)_RERUN]
+(link-rerun: &quot;Religious&quot;)[(set: $CareerChoice to &quot;religious&quot;)_RERUN]
+=||==
+(link-rerun: &quot;Entertainer&quot;)[(set: $CareerChoice to &quot;entertainer&quot;)_RERUN]
+(link-rerun: &quot;Thief&quot;)[(set: $CareerChoice to &quot;thief&quot;)_RERUN]
+(link-rerun: &quot;Soothsaying&quot;)[(set: $CareerChoice to &quot;soothsaying&quot;)_RERUN]
+|==|
+]
+(if: $CareerChoice is &quot;alchemy&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you immersed yourself in the art of alchemy, mastering the transformation of substances.]]]
+(else-if: $CareerChoice is &quot;herbology&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you dedicated your life to herbology, cultivating a deep understanding of magical plants and their properties.]]]
+(else-if: $CareerChoice is &quot;astrology&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you chose the path of astrology, honing your ability to read the stars and unravel the secrets of the cosmos.]]]
+(else-if: $CareerChoice is &quot;smithing&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you honed your skills as a skilled blacksmith, crafting your goods from ores and metals.]]]
+(else-if: $CareerChoice is &quot;cartography&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you became a skilled cartographer, intent on charting unexplored territories.]]]
+(else-if: $CareerChoice is &quot;soothsaying&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you embraced the path of a discreet soothsayer, and learned to foretell the possible futures.]]]
+(else-if: $CareerChoice is &quot;merchant&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you opened a nonchalant shop in the town square and soonafter became a successful merchant.]]]
+(else-if: $CareerChoice is &quot;scribe&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you became a scribe, preserving ancient knowledge and writing texts of all kinds.]]]
+(else-if: $CareerChoice is &quot;enchanting&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you began to study the art of enchanting, and learned to imbue everyday items with magical properties.]]]
+(else-if: $CareerChoice is &quot;religious&quot;)[(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you became religiously devout, and became a well renowned figure at the local church.]]]
+(else-if: $CareerChoice is &quot;entertainer&quot;)[
+(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you became an entertainer, and dazzled audiences by performing for them.]
+(replace: ?EFFECTSPOT)[
+* Sneaky +4 
+* Clever +2
+]]
+]
+(else-if: $CareerChoice is &quot;thief&quot;)[
+(replace: ?AnswerSpace)[(t8n:&#39;fade&#39;)[you chose the life of a thief, willing to do whatever it took to ensure that your place in the world was secure.]]
+(replace: ?EFFECTSPOT)[
+* Sneaky +4 
+* Clever +2
+]
+]
+]&lt;SECTION1|
+}
+{[]&lt;CONFIRMBUTTON|}
 </tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
