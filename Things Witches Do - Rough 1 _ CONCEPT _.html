@@ -519,7 +519,7 @@ However, the atmosphere takes an interesting turn under the watchful eye of [[Re
 
 The bustling marketplace of Hollow Vale is where the town&#39;s souls come together to swap stories, barter goods, and occasionally engage in spirited debates over who has the juiciest gossip. Stalls overflow with local produce, handmade trinkets, and the occasional rare book. If you&#39;re looking for the heart of town life, it&#39;s here, where the scent of fresh pastries competes with the aroma of mystical herbs.
 
-[[Town Center]] </tw-passagedata><tw-passagedata pid="15" name="Neighbors" tags="" position="100,1500" size="100,100">($CYCLE_GAME_TIME:)
+[[Town Center]] </tw-passagedata><tw-passagedata pid="15" name="Neighbors" tags="" position="1100,1700" size="100,100">($CYCLE_GAME_TIME:)
 
 [[Maurice Maydough]]
 [[Elenara Starwhisper]]
@@ -532,7 +532,7 @@ The bustling marketplace of Hollow Vale is where the town&#39;s souls come toget
 [[Glen Thornheight]]
 
 [[Town Center]]
-[[Path Home]] </tw-passagedata><tw-passagedata pid="16" name="Path to Woods" tags="" position="1300,1500" size="100,100"> ($CYCLE_GAME_TIME:)</tw-passagedata><tw-passagedata pid="17" name="Town Hall" tags="" position="100,1100" size="100,100">The modest Town Hall of Hollow Vale serves as the hub for all things bureaucratic, but don&#39;t let its serious exterior fool you. Inside, the town meetings are less about politics and more about deciding who makes the best apple cider. The mayor, Algernon, is an affable figure with a penchant for puns, and presides over the meetings with a sense of humor that keeps the atmosphere light.
+[[Path Home]] </tw-passagedata><tw-passagedata pid="16" name="Path to Woods" tags="" position="1800,1500" size="100,100"> ($CYCLE_GAME_TIME:)</tw-passagedata><tw-passagedata pid="17" name="Town Hall" tags="" position="100,1100" size="100,100">The modest Town Hall of Hollow Vale serves as the hub for all things bureaucratic, but don&#39;t let its serious exterior fool you. Inside, the town meetings are less about politics and more about deciding who makes the best apple cider. The mayor, Algernon, is an affable figure with a penchant for puns, and presides over the meetings with a sense of humor that keeps the atmosphere light.
 
 [[Full List of Town Citizens]]
 
@@ -551,7 +551,7 @@ As Maurice matured, so did his affinity for blending culinary artistry with myst
 
 Now residing in a quaint cottage on the outskirts of town, Maurice continues to bake in solitude, infusing his creations with both flavor and the healing essence of nature. Despite the unjust accusations, the aroma of freshly baked goods from the Maydough Bakery still lingers in the air, a testament to Maurice&#39;s unwavering passion for the alchemical art of baking.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="21" name="Elenara Starwhisper" tags="" position="500,1700" size="100,100">($CYCLE_GAME_TIME:)
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="21" name="Elenara Starwhisper" tags="" position="700,1800" size="100,100">($CYCLE_GAME_TIME:)
 Enora&#39;s abode is a mysterious tower at the outskirts of town, surrounded by a veil of ivy.
 
 Enora Reignhart, a mysterious recluse with an otherworldly air, was born into a family with a long lineage of seers and diviners. From a young age, she exhibited an uncanny ability to glimpse into the veiled future and interpret the mystical energies that flowed through Hollow Vale. The townsfolk, unaware of the true extent of her gifts, deemed Enora&#39;s insights as mere intuition.
@@ -560,9 +560,12 @@ Enora now lives a solitary life, offering her mystical services only to those wh
 
 Side-Quest/Sub-Plot: Intrigued by Enora&#39;s enigmatic presence, Melvin discovers that she is a guardian of ancient knowledge. However, a malevolent force seeks to exploit this knowledge for nefarious purposes. Unraveling the mystery behind Enora&#39;s role as a keeper of secrets becomes a quest that takes Melvin deep into the arcane realms, challenging both magical and non-magical boundaries. The revelations unearthed may hold the key to thwarting the corrupt church leader&#39;s plans.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="22" name="Glen Thornheight" tags="" position="200,1975" size="100,100">($CYCLE_GAME_TIME:)
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="22" name="Glen Thornheight" tags="" position="2400,2000" size="200,200">($CYCLE_GAME_TIME:)
 
-(set: $NPC-type $GlenThornheight to ($INITIALIZE_NPC: &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10, (dm:)))
+(if: visit is 1)[(set: $GlenThornheight to ($INIT_NPC: &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10, (a:(dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, false))))
+
+(set: $GlenThornheight&#39;s Quests to it + (a: (dm:&quot;QuestName&quot;, &quot;Quest2&quot;, &quot;Completed&quot;, false)))
+]
 &lt;!--Glen Thornheight, a seasoned tracker and guide, was raised in the outskirts of Hollow Vale, where the woods served as both playground and teacher. Born into a family with a deep connection to the land, Glen developed an extraordinary ability to navigate the enchanting wilderness that surrounded the town. From a young age, he could interpret the subtle language of the trees, predict the weather by the rustle of leaves, and discern the tracks left by elusive creatures.
 
 As he matured, Glen&#39;s reputation as an unparalleled guide grew, and he became an indispensable asset to the townsfolk seeking to traverse the mystical woods. However, when Reverend Pritchard&#39;s paranoia fueled accusations of nature-based magic, Glen&#39;s skills were seen as a threat.
@@ -574,18 +577,21 @@ Glen&#39;s residence is a quaint cottage surrounded by a lush garden, with vibra
 (if: $TimeOfDay is not &quot;Nighttime&quot; and $TimeOfDay is not &quot;Sunrise&quot;)[
 [[Glen-&gt;D1 Glen C1]] is tending the garden at the front of his house.]
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="23" name="Michael Myrridian Chronomancer" tags="" position="300,1700" size="100,100">($CYCLE_GAME_TIME:)
+(for: each _p, ...(open-storylets: where its tags contains &quot;GT_QUESTS&quot;))[(link-goto: _p&#39;s name) ]
+
+
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="23" name="Michael Myrridian Chronomancer" tags="" position="325,1800" size="100,100">($CYCLE_GAME_TIME:)
 
 Description: 
 Michael&#39;s dwelling is a sturdy cabin nestled at the edge of the enchanted woods. Surrounded by ancient trees and the soothing melody of nature, the cabin reflects Michael&#39;s affinity for the creatures that inhabit the woods. Inside, shelves are lined with sketches and journals documenting his observations of the beings, while the walls proudly display mounted hunts from the years prior, capturing the essence of his woodland explorations.
 
 Side-Quest/Sub-Plot: Melvin discovers that Michael has forged a bond with a reclusive magical creature, a guardian spirit of the woods. However, the spirit&#39;s connection to an ancient curse becomes apparent, and Michael seeks Melvin&#39;s assistance in lifting the curse. Navigating the enchanted woods, deciphering ancient rituals, and negotiating with magical entities becomes a joint quest that deepens Melvin&#39;s understanding of the town&#39;s magical ecosystem.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="24" name="Daelorian &amp; Petrina Celestialsong" tags="" position="400,1700" size="100,100">Description: Davis and Patricia reside in a charming farmhouse surrounded by fields of crops and magical herbs. The farmhouse, a blend of rustic charm and magical enchantments, stands as a testament to the couple&#39;s harmonious balance between agriculture and mysticism. The air is filled with the aroma of home-cooked meals and the gentle hum of magical energies.
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="24" name="Daelorian &amp; Petrina Celestialsong" tags="" position="500,1800" size="100,100">Description: Davis and Patricia reside in a charming farmhouse surrounded by fields of crops and magical herbs. The farmhouse, a blend of rustic charm and magical enchantments, stands as a testament to the couple&#39;s harmonious balance between agriculture and mysticism. The air is filled with the aroma of home-cooked meals and the gentle hum of magical energies.
 
 Side-Quest/Sub-Plot: Melvin discovers that Davis and Patricia have encountered an otherworldly entity that manifests through the crops. The entity&#39;s influence has demonstrated beneficial effects on the harvest. Investigating the origin of this entity, Melvin unravels a tale of a forgotten pact between the town&#39;s founders and ancient nature spirits. Resolving the conflict becomes a quest that requires Melvin to navigate the intertwined realms of agriculture and magic.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="25" name="Seraphina &amp; Evander Hallowglimmer" tags="" position="200,1700" size="100,100">{($CYCLE_GAME_TIME:)
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="25" name="Seraphina &amp; Evander Hallowglimmer" tags="" position="200,2200" size="100,100">{($CYCLE_GAME_TIME:)
 (set: $NPC-type $Seraphina to ($INITIALIZE_NPC: &quot;Seraphina&quot;, &quot;Hallowglimmer&quot;, 100, false, 10, (dm:)))
 (set: $NPC-type $Edward to ($INITIALIZE_NPC: &quot;Edward&quot;, &quot;Hallowglimmer&quot;, 100, false, 10, (dm:)))
 }
@@ -662,8 +668,9 @@ There are books here that are worth reading.
 ]
 (else:)[
 	($REVERT_CHARACTER_STATS:)
-    (set: $HoursSinceSleep to 0)
+    (set: $TiredAlertShown to false)
     (output-data: &quot;You are no longer tired.&quot;)
+    (set: $HoursSinceSleep to 0)
 ]
 (output:)[]
 ])
@@ -715,10 +722,13 @@ There are books here that are worth reading.
 
 &lt;!--NPC--&gt;
 
-(set: $NPC to (dm: &quot;FirstName&quot;, str, &quot;LastName&quot;, str, &quot;HP&quot;, num, &quot;IsWitch&quot;, bool, &quot;Favor&quot;, num, &quot;QuestsComplete&quot;, (dm:)))
+(set: $INIT_QUEST to (macro: dm-type _QUEST,[(output-data:(dm: &quot;QuestName&quot;, _QUEST&#39;s QuestName, &quot;Completed&quot;, _QUEST&#39;s Completed))]))
 
-(set: $INITIALIZE_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor, dm-type _quests, [
- (output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor, &quot;QuestsComplete&quot;, _quests))
+(set: $Quests to (a:(dm: &quot;QuestName&quot;, str, &quot;Completed&quot;, bool)))
+
+
+(set: $INIT_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor, $Quests-type _quests,[
+ (output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor, &quot;Quests&quot;, _quests))
 ]
 )
 )
@@ -959,7 +969,7 @@ Then, place any available reagents that will amplify your spell power prior to c
 
 
 
-</tw-passagedata><tw-passagedata pid="40" name="Mel" tags="" position="300,1500" size="100,100">In the shadows of Hollow Vale, where whispers carry secrets and the air is thick with the mystique of ancient practices, there exists a confidante like no other—the elusive Mel; a truly loyal and steadfast companion of the player, and a beacon of support and a guardian of the clandestine world of magic.
+</tw-passagedata><tw-passagedata pid="40" name="Mel" tags="" position="100,2000" size="100,100">In the shadows of Hollow Vale, where whispers carry secrets and the air is thick with the mystique of ancient practices, there exists a confidante like no other—the elusive Mel; a truly loyal and steadfast companion of the player, and a beacon of support and a guardian of the clandestine world of magic.
 
 Mel&#39;s personality is a kaleidoscope of enigmatic charm and unyielding loyalty. They navigate the realms of Hollow Vale with an air of mystery, always seeming to know the unspoken thoughts that linger in the player&#39;s mind. Behind their neutral exterior lies a soul woven with the threads of resilience and a spirit unyielding to the shadows that threaten their magical existence.
 
@@ -1011,7 +1021,7 @@ The small black cat has a penchant for two specific locations in town: the marke
 
 A peculiar aspect of Midnight&#39;s behavior is the seemingly focused interest in Reverend Pritchard. While the townsfolk puzzle over this connection, it becomes a thread in the larger tapestry of the town&#39;s mystical history.
 
-As the story progresses, it is revealed that Midnight is not just a wandering feline but the ancient wizard, Myzarin, who chose to remain in a feline form to safeguard Hollow Vale. Midnight&#39;s silent vigilance and calculated appearances are not random but purposeful, as the wizard cat subtly influences events to protect the town&#39;s magical heritage. The connection to Reverend Pritchard becomes a pivotal element in the unfolding narrative, adding layers of complexity to Midnight&#39;s role in the town&#39;s mysterious history.</tw-passagedata><tw-passagedata pid="46" name="Evelyn Holloway" tags="" position="400,1800" size="100,100">Evelyn Holloway, the gentle herbalist of Hollow Vale, carries with her a mysterious past shrouded in the whispers of the ancient woods. Raised in the embrace of nature, she learned the secrets of herbs and healing from her grandmother, a wise woman known for her deep connection to the mystical energies that flowed through the land.
+As the story progresses, it is revealed that Midnight is not just a wandering feline but the ancient wizard, Myzarin, who chose to remain in a feline form to safeguard Hollow Vale. Midnight&#39;s silent vigilance and calculated appearances are not random but purposeful, as the wizard cat subtly influences events to protect the town&#39;s magical heritage. The connection to Reverend Pritchard becomes a pivotal element in the unfolding narrative, adding layers of complexity to Midnight&#39;s role in the town&#39;s mysterious history.</tw-passagedata><tw-passagedata pid="46" name="Evelyn Holloway" tags="" position="700,2000" size="100,100">Evelyn Holloway, the gentle herbalist of Hollow Vale, carries with her a mysterious past shrouded in the whispers of the ancient woods. Raised in the embrace of nature, she learned the secrets of herbs and healing from her grandmother, a wise woman known for her deep connection to the mystical energies that flowed through the land.
 
 Evelyn&#39;s affinity for the creatures of the woods is not merely a reflection of her profession; it is a testament to the bond she shares with the enchanted realm around her. Her childhood was spent wandering the verdant paths, conversing with the spirits that dwelled within the ancient trees, and deciphering the language of the rustling leaves.
 
@@ -1021,7 +1031,7 @@ Now, residing in a humble cottage on the outskirts of the town, Evelyn continues
 
 Side-Quest/Sub-Plot: Evelyn is a skilled potion-maker with knowledge of rare herbs and their magical properties. However, her latest concoction has unintended consequences. Investigating the potion&#39;s ingredients and its origins becomes a quest.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="47" name="Lucinda Thorne" tags="" position="300,1800" size="100,100">Lucinda Thorne, the compassionate midwife and healer of Hollow Vale, carries the scars of a tumultuous past marked by unjust accusations and the shadows of superstition. Born into a lineage of skilled midwives, Lucinda&#39;s destiny was woven with the delicate threads of life and the profound mysteries of childbirth.
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="47" name="Lucinda Thorne" tags="" position="500,2000" size="100,100">Lucinda Thorne, the compassionate midwife and healer of Hollow Vale, carries the scars of a tumultuous past marked by unjust accusations and the shadows of superstition. Born into a lineage of skilled midwives, Lucinda&#39;s destiny was woven with the delicate threads of life and the profound mysteries of childbirth.
 
 Her skills extended beyond the birthing chamber, as she had an innate understanding of herbal remedies and holistic healing practices. The townsfolk revered Lucinda for her gentle touch, whispered to be guided by ancestral wisdom and an uncanny connection to the natural forces that governed life in Hollow Vale.
 
@@ -1031,7 +1041,7 @@ Undeterred by the unfounded allegations, Lucinda retreated to the outskirts of H
 
 Behind the gentle facade lies a woman who bears the weight of unjust persecution, yet Lucinda&#39;s commitment to her healing arts remains unwavering. In her quiet corner of the woods, she tends to the needs of those who seek solace and comfort, weaving the intricate tapestry of life and resilience in the face of adversity.
 
-[[Neighbors]]</tw-passagedata><tw-passagedata pid="48" name="Glyndor Moonshadow" tags="" position="200,1800" size="100,100">Glyndor Moonshadow:
+[[Neighbors]]</tw-passagedata><tw-passagedata pid="48" name="Glyndor Moonshadow" tags="" position="300,2000" size="100,100">Glyndor Moonshadow:
 Glyndor Moonshadow, the town&#39;s amiable blacksmith, inherited his craft from a long line of skilled metalworkers. The Lauwer Forge, nestled on the edge of Hollow Vale, was both a place of industry and a haven for those seeking custom-made weaponry and enchanted tools. Glen&#39;s skill with the hammer and anvil was renowned, and his creations were sought after by warriors and artisans alike.
 
 However, Glen harbored a secret talent beyond the realm of traditional blacksmithing. He possessed an innate ability to infuse his creations with protective enchantments, passed down through generations of Lauwer blacksmiths. This magical touch became a boon to the townsfolk, offering them not only finely crafted tools but also a sense of security in turbulent times.
@@ -1121,7 +1131,7 @@ Reverend Pritchard&#39;s role became pivotal in reshaping the narrative of Hollo
 [[Myzarin Moonshadow]]
 
 
-</tw-passagedata><tw-passagedata pid="51" name="Myzarin Moonshadow" tags="" position="2400,400" size="100,100"> Myzarin Moonshadow was well taught in the arts of shape-shifting. He also possessed knowledge of magick that kept him from aging. He was one of the few who stayed behind in Hollow Vale after the battle that destroyed the town. He eventually disapeared without a trace, according to the new citizens. In truth, he shape-shifted into his feline form, a small black cat that the townsfolk happily took to calling [[Midnight]].</tw-passagedata><tw-passagedata pid="52" name="Mysthraln - The Language" tags="" position="400,500" size="100,100">Phonetics:
+</tw-passagedata><tw-passagedata pid="51" name="Myzarin Moonshadow" tags="" position="2300,400" size="100,100"> Myzarin Moonshadow was well taught in the arts of shape-shifting. He also possessed knowledge of magick that kept him from aging. He was one of the few who stayed behind in Hollow Vale after the battle that destroyed the town. He eventually disapeared without a trace, according to the new citizens. In truth, he shape-shifted into his feline form, a small black cat that the townsfolk happily took to calling (link:&quot;He Also Shapeshifts&quot;)[(goto:&quot;Midnight&quot;)]</tw-passagedata><tw-passagedata pid="52" name="Mysthraln - The Language" tags="" position="400,500" size="100,100">Phonetics:
 
 Vowels:
 
@@ -1261,7 +1271,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 ]&lt;SECTION1|
 }
 {[]&lt;CONFIRMBUTTON|}
-</tw-passagedata><tw-passagedata pid="58" name="D1 Glen C1" tags="" position="100,2100" size="100,100">(if: visit is 1)[(set: $DayGlenWasLastHelped to 0)]
+</tw-passagedata><tw-passagedata pid="58" name="D1 Glen C1" tags="" position="2300,2200" size="100,100">(if: visit is 1)[(set: $DayGlenWasLastHelped to 0)]
 [Glen reacts warmly to your approach as he becomes aware of your presence. ]&lt;INTRO_HOOK|
 []&lt;GLEN_SPEECH|
 (click: &quot;approach&quot;)[
@@ -1296,6 +1306,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (alert: &quot;You helped Glen for an hour and he appreciates it.&quot;)
 ($CYCLE_GAME_TIME:)
 (set: $DayGlenWasLastHelped to $Day)
+(set: $GlenThornheight&#39;s Favor to it +1)
 (replace: ?GLEN_SPEECH)[&quot;Thanks so much for all your help!&quot;]
 (replace: ?INTRO_HOOK)[]
 ]
@@ -1306,21 +1317,32 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (replace: ?YOUR_SPEECH)+(t8n:&#39;fade&#39;)+(t8n-time:1s)[You decide to quickly leave, and hurriedly state, &quot;Um, sorry, Glen, I&#39;ve got to go!&quot;]
 (set: _GlenResponse to &quot;T12&quot;)(show:(hooks-named: _GlenResponse))
 ]
-[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1600,700" size="100,100"> $DialogTransition[Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
- &lt;br&gt;(link-rerun:&quot;Confirm&quot;)[
+[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1600,700" size="100,100"> Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
+ &lt;br&gt;&#39;[CONFIRM]&#39;(click-rerun:&quot;CONFIRM&quot;)[
 (set: _NumHours to (num: _NumberOfHoursToSleep))
+
 (for: each _i, ...(range: 1,_NumHours))[
 (replace: ?GT)[($CYCLE_GAME_TIME:)]
-(set: $HoursSinceSleep to it - (_NumHours * 2))
 ]
+(set: $HoursSinceSleep to (abs:$HoursSinceSleep - _NumHours -_NumHours ))
 []&lt;GT|
 (plural: _NumHours, &quot;hour&quot;, &quot;hours&quot;) passed while you were sleeping.
 (if: $HoursSinceSleep is &lt; $SleepNeeded)
 [
 ($SET_CHARACTER_TIRED: false)
-]]
+]
+
+]
 (link:&quot;Get out of bed&quot;)[(Goto:&quot;INSIDE HOME&quot;)]
-]</tw-passagedata></tw-storydata>
+</tw-passagedata><tw-passagedata pid="60" name="Glen Quest 1" tags="GT_QUESTS" position="2500,2200" size="100,100">(storylet: when $GlenThornheight&#39;s Quests contains (dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, false))
+
+You made it here 1
+
+Finish Quest
+
+(click: &quot;Finish Quest&quot;)[(set: $GlenThornheight&#39;s Quests&#39;s 1st&#39;s Completed to true)(goto:&quot;Glen Thornheight&quot;)]</tw-passagedata><tw-passagedata pid="61" name="Glen Quest 2" tags="GT_QUESTS" position="2500,2300" size="100,100">(storylet: when $GlenThornheight&#39;s Quests contains (dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, true))
+
+You made it here 2</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
