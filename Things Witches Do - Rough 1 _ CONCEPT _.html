@@ -562,10 +562,9 @@ Side-Quest/Sub-Plot: Intrigued by Enora&#39;s enigmatic presence, Melvin discove
 
 [[Neighbors]]</tw-passagedata><tw-passagedata pid="22" name="Glen Thornheight" tags="" position="2400,2000" size="200,200">($CYCLE_GAME_TIME:)
 
-(if: visit is 1)[(set: $GlenThornheight to ($INIT_NPC: &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10, (a:(dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, false))))
-
-(set: $GlenThornheight&#39;s Quests to it + (a: (dm:&quot;QuestName&quot;, &quot;Quest2&quot;, &quot;Completed&quot;, false)))
+(if: visit is 1)[(set: $GlenThornheight to ($INIT_NPC: &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10))
 ]
+
 &lt;!--Glen Thornheight, a seasoned tracker and guide, was raised in the outskirts of Hollow Vale, where the woods served as both playground and teacher. Born into a family with a deep connection to the land, Glen developed an extraordinary ability to navigate the enchanting wilderness that surrounded the town. From a young age, he could interpret the subtle language of the trees, predict the weather by the rustle of leaves, and discern the tracks left by elusive creatures.
 
 As he matured, Glen&#39;s reputation as an unparalleled guide grew, and he became an indispensable asset to the townsfolk seeking to traverse the mystical woods. However, when Reverend Pritchard&#39;s paranoia fueled accusations of nature-based magic, Glen&#39;s skills were seen as a threat.
@@ -635,7 +634,8 @@ There are books here that are worth reading.
 (set: $HoursSinceSleep to 0)
 
 (set: $CYCLE_GAME_TIME to (macro: [
-  (set: $HoursSinceSleep to it +1)
+
+(set: $HoursSinceSleep to it +1)
   (set: $Hour to $Hour + 1)
   (if: $Hour is 1)[(set: $TimeOfDay to &quot;Sunrise&quot;)+(output-data: &quot;The sun is rising.&quot;)]
   (if: $Hour is &gt;1 and $Hour is &lt; 5)[(set: $TimeOfDay to &quot;Morning&quot;)+(output-data: &quot;It&#39;s early morning.&quot;)]
@@ -686,10 +686,9 @@ There are books here that are worth reading.
     (else:)[
 	(output:)[]
     ]
-    
+]
+))
 
-])
-)
 &lt;!--FAILSAFE VARIABLES--&gt;
 
 (set: str-type $PlaceOfResidence to &quot;Cabin&quot;)
@@ -709,8 +708,7 @@ There are books here that are worth reading.
 ]
 (output-data:(alert: &quot;Added &quot; + (str:_Quantity) + &quot; &quot; + (str:_ItemName) + &quot; to inventory.&quot;))
 ]
-)
-)
+))
 
 (set: $HomeStorage to (dm:))
 
@@ -720,18 +718,33 @@ There are books here that are worth reading.
 (set: const-type $Antagonist to (either: &quot;Melvin&quot;,&quot;Glen&quot;,&quot;Enora&quot;,&quot;Whiskers&quot;,&quot;Pritchard&quot;))
 (set: const-type $GuiltyOfWitchcraft to (either: &quot;Glen&quot;, &quot;Enora&quot;, &quot;Michael&quot;, &quot;Sheena&quot;, &quot;Davis&quot;))
 
+&lt;!-- QUESTS --&gt;
+
+(set: $PlayerQuests to (a:))
+(set: $FinishedPlayerQuests to (a:))
+
+(set: $INIT_QUEST to (macro: str-type _QuestName,[
+(if: $FinishedPlayerQuests does not contain _QuestName)[
+(set: $PlayerQuests to it + (a: _QuestName))
+(output-data:(print: (str:&quot;QuestName &quot; + _QuestName + &quot; added to $PlayerQuests&quot;)))
+]
+(output:)[]
+]
+))
+
+(set: $COMPLETE_QUEST to (macro: str-type _QuestName,[
+(set: $PlayerQuests to it - (a: _QuestName))
+(set: $FinishedPlayerQuests to it + (a: _QuestName))
+(output-data:(print: (str:&quot;QuestName &quot; + _QuestName + &quot; added to $FinishedPlayerQuests&quot;)))
+]
+))
+
 &lt;!--NPC--&gt;
 
-(set: $INIT_QUEST to (macro: dm-type _QUEST,[(output-data:(dm: &quot;QuestName&quot;, _QUEST&#39;s QuestName, &quot;Completed&quot;, _QUEST&#39;s Completed))]))
-
-(set: $Quests to (a:(dm: &quot;QuestName&quot;, str, &quot;Completed&quot;, bool)))
-
-
-(set: $INIT_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor, $Quests-type _quests,[
- (output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor, &quot;Quests&quot;, _quests))
+(set: $INIT_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor,[
+(output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor))
 ]
-)
-)
+))
 
 &lt;!-- ADDITIONAL FUNCTIONS --&gt;
 
@@ -1008,8 +1021,8 @@ Stepping into the sunlight, you brush aside the hanging flora that creates the d
 ]]
 (else:)[(replace:?sidebar)[(enchant: ?Sidebar, (bg: #000000))]]
 &lt;!--(enchant: ?passage, (box:&quot;=XXX=&quot;))--&gt;
-
-($DETERMINE_CHARACTER_TIRED:)</tw-passagedata><tw-passagedata pid="44" name="HEADER" tags="header" position="100,100" size="200,100">(if: (passage:)&#39;s tags contains &quot;nofooter&quot;)[(replace:?sidebar)[(enchant: ?Sidebar, (bg: #000000))]]</tw-passagedata><tw-passagedata pid="45" name="Midnight" tags="" position="700,1400" size="100,100">Midnight is a small black cat that is seen often hanging out throughout town in various places. Its favorite spots are at the market and at the church. Some of the citizens claim Midnight has been there as long as the town itself, while others argue that the seemingly individual cat is in fact many different cats, each a part of a great lineage of cats that has populated the nearby woods. 
+($DETERMINE_CHARACTER_TIRED:)</tw-passagedata><tw-passagedata pid="44" name="HEADER" tags="header" position="100,100" size="200,100">(if: (passage:)&#39;s tags contains &quot;nofooter&quot;)[(replace:?sidebar)[(enchant: ?Sidebar, (bg: #000000))(replace: ?footer)[]]]
+</tw-passagedata><tw-passagedata pid="45" name="Midnight" tags="" position="700,1400" size="100,100">Midnight is a small black cat that is seen often hanging out throughout town in various places. Its favorite spots are at the market and at the church. Some of the citizens claim Midnight has been there as long as the town itself, while others argue that the seemingly individual cat is in fact many different cats, each a part of a great lineage of cats that has populated the nearby woods. 
 
 Midnight seems to have a peculiar interest in [[Reverend Pritchard]] .
 
@@ -1317,6 +1330,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (replace: ?YOUR_SPEECH)+(t8n:&#39;fade&#39;)+(t8n-time:1s)[You decide to quickly leave, and hurriedly state, &quot;Um, sorry, Glen, I&#39;ve got to go!&quot;]
 (set: _GlenResponse to &quot;T12&quot;)(show:(hooks-named: _GlenResponse))
 ]
+($INIT_QUEST: &quot;Glen&#39;s First Quest&quot;)
 [ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1600,700" size="100,100"> Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
  &lt;br&gt;&#39;[CONFIRM]&#39;(click-rerun:&quot;CONFIRM&quot;)[
 (set: _NumHours to (num: _NumberOfHoursToSleep))
@@ -1324,25 +1338,43 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (for: each _i, ...(range: 1,_NumHours))[
 (replace: ?GT)[($CYCLE_GAME_TIME:)]
 ]
-(set: $HoursSinceSleep to (abs:$HoursSinceSleep - _NumHours -_NumHours ))
+(set: $HoursSinceSleep to it - _NumHours *2)
+(if: $HoursSinceSleep is &lt; 0) [(set: $HoursSinceSleep to 0)] 
 []&lt;GT|
 (plural: _NumHours, &quot;hour&quot;, &quot;hours&quot;) passed while you were sleeping.
 (if: $HoursSinceSleep is &lt; $SleepNeeded)
 [
 ($SET_CHARACTER_TIRED: false)
 ]
-
+(if: _NumHours is &gt;5 or $HoursSinceSleep is &lt; 11)[(set: $HoursSinceSleep to 0)
+You are well rested.]
 ]
 (link:&quot;Get out of bed&quot;)[(Goto:&quot;INSIDE HOME&quot;)]
-</tw-passagedata><tw-passagedata pid="60" name="Glen Quest 1" tags="GT_QUESTS" position="2500,2200" size="100,100">(storylet: when $GlenThornheight&#39;s Quests contains (dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, false))
+</tw-passagedata><tw-passagedata pid="60" name="Glen Quest 1" tags="GT_QUESTS" position="2500,2200" size="100,100">(storylet: when  $PlayerQuests contains &quot;Glen&#39;s First Quest&quot;)
 
 You made it here 1
 
 Finish Quest
 
-(click: &quot;Finish Quest&quot;)[(set: $GlenThornheight&#39;s Quests&#39;s 1st&#39;s Completed to true)(goto:&quot;Glen Thornheight&quot;)]</tw-passagedata><tw-passagedata pid="61" name="Glen Quest 2" tags="GT_QUESTS" position="2500,2300" size="100,100">(storylet: when $GlenThornheight&#39;s Quests contains (dm:&quot;QuestName&quot;, &quot;Quest1&quot;, &quot;Completed&quot;, true))
+(click: &quot;Finish Quest&quot;)[
 
-You made it here 2</tw-passagedata></tw-storydata>
+($COMPLETE_QUEST: &quot;Glen&#39;s First Quest&quot;)
+($INIT_QUEST: &quot;Glen&#39;s Second Quest&quot;)
+
+
+(goto:&quot;Glen Thornheight&quot;)]</tw-passagedata><tw-passagedata pid="61" name="Glen Quest 2" tags="GT_QUESTS" position="2500,2300" size="100,100">(storylet: when $FinishedPlayerQuests contains &quot;Glen&#39;s First Quest&quot; and $PlayerQuests contains &quot;Glen&#39;s Second Quest&quot; and $FinishedPlayerQuests does not contain &quot;Glen&#39;s Second Quest&quot;)
+
+You made it here 2
+
+Finish Quest
+
+(click: &quot;Finish Quest&quot;)[
+
+($COMPLETE_QUEST: &quot;Glen&#39;s Second Quest&quot;)
+
+
+(goto:&quot;Glen Thornheight&quot;)]
+</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
