@@ -389,7 +389,7 @@ In a world where the line between good and evil is as thin as a witch&#39;s veil
 
 
 
-</tw-passagedata><tw-passagedata pid="4" name="YOUR EARLY YEARS" tags="nofooter" position="1400,200" size="100,100"> $DialogTransition(dialog: bind _Fascination, &quot;As a young child, you were fascinated with...&quot;, &quot;Learning&quot;, &quot;Playing&quot;, &quot;Both&quot;)
+</tw-passagedata><tw-passagedata pid="4" name="YOUR EARLY YEARS" tags="nofooter" position="1400,100" size="100,100"> $DialogTransition(dialog: bind _Fascination, &quot;As a young child, you were fascinated with...&quot;, &quot;Learning&quot;, &quot;Playing&quot;, &quot;Both&quot;)
 (if: _Fascination is &quot;Learning&quot;)[(set: $Clever to it +4)]
 (else-if: _Fascination is &quot;Playing&quot;)[(set: $Sneaky to it +4)]
 (else-if: _Fascination is &quot;Both&quot;)[(set: $Clever to it +2)(set: $Sneaky to it +2)]
@@ -413,7 +413,7 @@ $DialogTransition(dialog: bind $EarlyWork, &quot;When you could work, you found 
 (if: $EarlyWork is &quot;Librarian&quot;)[	(set: $Clever to $it +4)   (go-to: &quot;Librarian Upbringing&quot;)]
 (else-if: $EarlyWork is &quot;Farmhand&quot;)[	(set: $GreenMagick to it +4)    (go-to: &quot;Farmhand Upbringing&quot;)]
 (else-if: $EarlyWork is &quot;Tailor&quot;)[	(set: $Sneaky to it +2, $Clever to it +2) (go-to: &quot;Tailor Upbringing&quot;) ]
-</tw-passagedata><tw-passagedata pid="5" name="Librarian Upbringing" tags="nofooter" position="1300,300" size="100,100">$DialogTransition(dialog: bind $SpellBookFound, &quot;One day, at work, you stumbled upon...&quot;, &quot;A white book.&quot;, &quot;A black book.&quot;)
+</tw-passagedata><tw-passagedata pid="5" name="Librarian Upbringing" tags="nofooter" position="1150,300" size="100,100">$DialogTransition(dialog: bind $SpellBookFound, &quot;One day, at work, you stumbled upon...&quot;, &quot;A white book.&quot;, &quot;A black book.&quot;)
 
 (if: $SpellBookFound is &quot;A white book.&quot;)[
 	(set: $WhiteMagick to $WhiteMagick+6)
@@ -454,7 +454,7 @@ A neighboring farm accuses your farm of using forbidden magic. How do you respon
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Cabin&quot;)]
 (if: $PlaceOfResidence is &quot;Cave&quot;) (goto: &quot;Cave&quot;)</tw-passagedata><tw-passagedata pid="8" name="Outside Home" tags="" position="700,700" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Outside Cabin&quot;)]
-(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1500,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="700,900" size="100,100">($CYCLE_GAME_TIME:)
+(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1650,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="700,900" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cave&quot;)]
 
 (if: $PlaceOfResidence is &quot;Cave&quot;)[
@@ -627,7 +627,21 @@ There are books here that are worth reading.
 
 (set: $DialogBox to (box: &quot;=XXXX=&quot;, 10))
 
-&lt;!-- GAME TIME--&gt;
+&lt;!-- SPELLS --&gt;
+
+(set: $Spell to (dm:&quot;SpellName&quot;, str, &quot;SpellPowerRequired&quot;, num, &quot;Description&quot;, str))
+(set: $Spellbook to (a:(dm:&quot;SpellName&quot;, &quot;Fast Growth&quot;, &quot;SpellPowerRequired&quot;, 1, &quot;Description&quot;, &quot;The first spell and test subject for the spell casting system.&quot;)))
+(set: $ADD_SPELL_TO_SPELLBOOK to (macro: $Spell-type _Spell,[
+(set: $Spellbook to it + (a:_Spell))
+(output:)[]
+])
+)
+
+(set: $Spell-type $LightningStrike to (dm: &quot;SpellName&quot;, &quot;Lightning Strike&quot;, &quot;SpellPowerRequired&quot;, 2, &quot;Description&quot;, &quot;Call the skies to send a lightning strike towards a target.&quot;))
+($ADD_SPELL_TO_SPELLBOOK: $LightningStrike)
+
+
+&lt;!-- GAME TIME --&gt;
 
 (set: $Hour to 0, $Day to 1, $TimeOfDay to &quot;Sunrise&quot;)
 (set: $SleepNeeded to 16)
@@ -686,8 +700,8 @@ There are books here that are worth reading.
     (else:)[
 	(output:)[]
     ]
-]
-))
+])
+)
 
 &lt;!--FAILSAFE VARIABLES--&gt;
 
@@ -707,8 +721,8 @@ There are books here that are worth reading.
 (set: $Inventory to it + (dm:_ItemName, _Quantity))
 ]
 (output-data:(alert: &quot;Added &quot; + (str:_Quantity) + &quot; &quot; + (str:_ItemName) + &quot; to inventory.&quot;))
-]
-))
+])
+)
 
 (set: $HomeStorage to (dm:))
 
@@ -729,22 +743,22 @@ There are books here that are worth reading.
 (output-data:(print: (str:&quot;QuestName &quot; + _QuestName + &quot; added to $PlayerQuests&quot;)))
 ]
 (output:)[]
-]
-))
+])
+)
 
 (set: $COMPLETE_QUEST to (macro: str-type _QuestName,[
 (set: $PlayerQuests to it - (a: _QuestName))
 (set: $FinishedPlayerQuests to it + (a: _QuestName))
 (output-data:(print: (str:&quot;QuestName &quot; + _QuestName + &quot; added to $FinishedPlayerQuests&quot;)))
-]
-))
+])
+)
 
 &lt;!--NPC--&gt;
 
 (set: $INIT_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor,[
 (output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor))
-]
-))
+])
+)
 
 &lt;!-- ADDITIONAL FUNCTIONS --&gt;
 
@@ -759,16 +773,37 @@ There are books here that are worth reading.
 [Secret Room in Library]&lt;Library|
 [Abandoned Chapel]&lt;Chapel|
 
-(click: ?Cabin)[(set: $PlaceOfResidence to &quot;Cabin&quot;)(go-to: &quot;INSIDE HOME&quot;)]
-(click: ?Cave)[(set: $PlaceOfResidence to &quot;Cave&quot;)(go-to: &quot;INSIDE HOME&quot;)]
-(click: ?Loft)[(set: $PlaceOfResidence to &quot;Loft&quot;)(go-to: &quot;INSIDE HOME&quot;)]
-(click: ?Library)[(set: $PlaceOfResidence to &quot;Library&quot;)(go-to: &quot;INSIDE HOME&quot;)]
-(click: ?Chapel)[(set: $PlaceOfResidence to &quot;Chapel&quot;)(go-to: &quot;INSIDE HOME&quot;)]
+(click: ?Cabin)[
+
+(set: $PlaceOfResidence to &quot;Cabin&quot;)
+(go-to: &quot;INSIDE HOME&quot;)
+]
+(click: ?Cave)[
+
+(set: $PlaceOfResidence to &quot;Cave&quot;)
+(go-to: &quot;INSIDE HOME&quot;)
+]
+(click: ?Loft)[
+
+(set: $PlaceOfResidence to &quot;Loft&quot;)
+(go-to: &quot;INSIDE HOME&quot;)
+]
+(click: ?Library)[
+
+(set: $PlaceOfResidence to &quot;Library&quot;)
+(go-to: &quot;INSIDE HOME&quot;)
+]
+(click: ?Chapel)[
+
+(set: $PlaceOfResidence to &quot;Chapel&quot;)
+(go-to: &quot;INSIDE HOME&quot;)
+]
 </tw-passagedata><tw-passagedata pid="29" name="Cabin" tags="" position="1400,900" size="100,100">$DialogTransition[=
 (click-rerun:&quot;door&quot;)[(scroll:?page, ?DoorSpot)(replace: ?DoorSpot)[(text-colour:#613000)+(bg:grey)[The door] has been weathered by years of exposure to the elements, and bears the scars of time on its sturdy oak surface. 
 [Go Outside]]]
 (click:&quot;Go Outside&quot;)[$DialogFade(go-to: &quot;Outside Home&quot;)]
 (click: &quot;fireplace&quot;)[(redirect: &quot;Cabin Fireplace&quot;)(t8n-depart: &quot;dissolve&quot;)]
+[]&lt;SpellCircle|
 []&lt;FireplaceSpot|
 []&lt;BED_SPOT|(click-rerun: &quot;bed&quot;)[(alert: bind _SleepDecision, &quot;Sleep now?&quot;, &quot;No&quot;, &quot;Yes&quot;)
 (if: _SleepDecision is &quot;Yes&quot;)[(Goto:&quot;Sleep&quot;)]]
@@ -796,7 +831,11 @@ A small (text-colour:white)+(bg:#94612e)[table] rests several steps to the side 
  On it, your weathered journal rests. (click:&quot;journal&quot;)[The book&#39;s pages are (text-colour:(hsl:60,0.567,0.3804,0.85))[yellowed] with age, and reveal your interest in ancient knowledge and folklore(if: $EarlyWork is &quot;Librarian&quot;)[, along with your ability to read and write well]. In some of the pages, you&#39;ve written, in a secret language, passages that only you know how to decipher. ]
 ]
 ]]]&lt;!-- END TABLE --&gt; 
-
+(if: $TimeOfDay is &quot;Nighttime&quot;)[
+(replace:?SpellCircle)[It&#39;s night time. **Cast a spell**? 
+(click-rerun: &quot;Cast a spell&quot;)[(goto:&quot;Cast A Spell&quot;)]
+]
+]
 
 
 ]
@@ -930,7 +969,9 @@ Concealed in the heart of the woods, the air in your cave carries the scent of e
 ]&lt;!--END ANY VISIT AFTER 1--&gt;
 
 (click: &quot;fireplace&quot;)[(goto: &quot;Cave Fireplace&quot;)]
-[[Outside Cave]]</tw-passagedata><tw-passagedata pid="37" name="Casting A Circle Spell" tags="" position="2000,200" size="200,200">Casting a Circle Spell involves 5 steps: 
+[[Outside Cave]]
+
+[[Cast A Spell]]</tw-passagedata><tw-passagedata pid="37" name="Casting A Circle Spell" tags="" position="2000,200" size="200,200">Casting a Circle Spell involves 5 steps: 
 
 1. Make a Circle ( Salt, Chalk, etc can be Used )
 2. Place Reagents to Amplify Effect
@@ -950,7 +991,7 @@ Then, place any available reagents that will amplify your spell power prior to c
 
 
 
-</tw-passagedata><tw-passagedata pid="38" name="ORIGINS" tags="nofooter" position="1400,100" size="100,100"> $DialogTransition(dialog: bind _BirthSeason, &quot;You were born in the season of...&quot;, &quot;Fall&quot;, &quot;Winter&quot;, &quot;Spring&quot;,&quot;Summer&quot;)
+</tw-passagedata><tw-passagedata pid="38" name="ORIGINS" tags="nofooter" position="1400,0" size="100,100"> $DialogTransition(dialog: bind _BirthSeason, &quot;You were born in the season of...&quot;, &quot;Fall&quot;, &quot;Winter&quot;, &quot;Spring&quot;,&quot;Summer&quot;)
 (if: _BirthSeason is &quot;Fall&quot;)[(set: $Charming to it +4)]
 (else-if: _BirthSeason is &quot;Winter&quot;)[(set: $Attractive to it +4)]
 (else-if: _BirthSeason is &quot;Spring&quot;)[(set: $Clever to it +2)(set: $Sneaky to it +2)]
@@ -1177,7 +1218,7 @@ Mysthrala
 Zirenholm
 Valthuris
 
-Feel free to mix and match these elements to create unique spell names and ancient place names for your game. If you have specific themes or sounds in mind, let me know, and we can tailor the language accordingly!</tw-passagedata><tw-passagedata pid="53" name="Eldrathorn" tags="" position="400,600" size="100,100">The secret name of the town that only the founders knew.</tw-passagedata><tw-passagedata pid="54" name="ReadBook1" tags="" position="1250,400" size="100,100">{=	(if: $SpellBookFound is &quot;A white book.&quot;)[
+Feel free to mix and match these elements to create unique spell names and ancient place names for your game. If you have specific themes or sounds in mind, let me know, and we can tailor the language accordingly!</tw-passagedata><tw-passagedata pid="53" name="Eldrathorn" tags="" position="400,600" size="100,100">The secret name of the town that only the founders knew.</tw-passagedata><tw-passagedata pid="54" name="ReadBook1" tags="" position="1100,400" size="100,100">{=	(if: $SpellBookFound is &quot;A white book.&quot;)[
 		(set: $WhiteMagick to it +2)]
 	(else:)[(set: $BlackMagick to it +2)]
     (set: $Clever to $Clever +3)
@@ -1210,7 +1251,7 @@ Feel free to mix and match these elements to create unique spell names and ancie
 $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the book turned to obsession, you finally made a firm deciscion about the book&#39;s fate...&quot;, &quot;You kept the book.&quot;, &quot;You buried the book.&quot;, &quot;You burned the book.&quot;)
 
 (go-to:&quot;Choose Place of Residence&quot;)
-</tw-passagedata><tw-passagedata pid="55" name="DidNotReadBook1" tags="" position="1200,300" size="100,100">(set: $Clever to it + 5)
+</tw-passagedata><tw-passagedata pid="55" name="DidNotReadBook1" tags="" position="1200,400" size="100,100">(set: $Clever to it + 5)
 (set: $Sneaky to $Sneaky +6)
 (set: $Wealthy to it +2)
 (dialog: bind $TheBooksFate, &quot;Even though you never learned the book&#39;s secrets,&quot; , &quot;You kept the book.&quot;, &quot;You buried the book.&quot;, &quot;You burned the book.&quot;)
@@ -1232,7 +1273,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 
 
 
-</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,400" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
+</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,600" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
 {
 (align:&quot;=&gt;&lt;=&quot;)+(box:&quot;X&quot;, 6)[[After deciding not to read the book of ancient knowledge,` ` ]&lt;QuestionSpace|[you continued your journey, exploring various pursuits in search of your true calling.]&lt;AnswerSpace|]}
 {[]&lt;EFFECTSPOT|}
@@ -1331,10 +1372,12 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (set: _GlenResponse to &quot;T12&quot;)(show:(hooks-named: _GlenResponse))
 ]
 ($INIT_QUEST: &quot;Glen&#39;s First Quest&quot;)
-[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1600,700" size="100,100"> Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
+[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1000,700" size="100,100"> (set: _TotalHoursSlept to 0)
+ Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
  &lt;br&gt;&#39;[CONFIRM]&#39;(click-rerun:&quot;CONFIRM&quot;)[
 (set: _NumHours to (num: _NumberOfHoursToSleep))
 
+(set: _TotalHoursSlept to it + _NumHours) 
 (for: each _i, ...(range: 1,_NumHours))[
 (replace: ?GT)[($CYCLE_GAME_TIME:)]
 ]
@@ -1346,7 +1389,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 [
 ($SET_CHARACTER_TIRED: false)
 ]
-(if: _NumHours is &gt;5 or $HoursSinceSleep is &lt; 11)[(set: $HoursSinceSleep to 0)
+(if: _TotalHoursSlept is &gt;5)[(set: $HoursSinceSleep to 0)
 You are well rested.]
 ]
 (link:&quot;Get out of bed&quot;)[(Goto:&quot;INSIDE HOME&quot;)]
@@ -1374,6 +1417,62 @@ Finish Quest
 
 
 (goto:&quot;Glen Thornheight&quot;)]
+</tw-passagedata><tw-passagedata pid="62" name="Cast A Spell" tags="" position="2000,500" size="100,100">(set: _CandlesLit to false, _Desc to 0, _Name to &quot;&quot;, _ReagentList to (a:))
+(dialog: bind _CircleReagent, &quot;First, make a circle on the ground...&quot;, &quot;Use Ash&quot;, &quot;Use Salt&quot;) 
+
+(if: _CircleReagent is &quot;Ash&quot;)[]
+(else:)[]
+|=
+[Place reagents]&lt;ReagentZone|
+(click:&quot;Place reagents&quot;)[(replace: ?ReagentZone)[
+$DialogBox[Placing reagents in your circle will empower your spells.
+=|
+[(box:&quot;=XX=&quot;, 5)[(for: each _i, ...(dm-entries:$Inventory))[
+(if:_i&#39;s value is not 0)[(link-rerun:(str: _i&#39;s name + &quot; , &quot; + (str:_i&#39;s value)))
+[(set: _reagentconfirm to (confirm: (str: &quot;Add &quot; + _i&#39;s name + &quot; to the circle?&quot;)))
+[(if: _reagentconfirm is true)[
+(set: _ReagentList to it + (a:_i&#39;s name))
+(set: _i&#39;s name of $Inventory to it -1)
+(set: _reagentconfirm to false)
+(rerun: ?INVENTORY_LIST)
+(rerun: ?REAGENT_LIST)
+]]]
+]] ]]&lt;INVENTORY_LIST|
+]]
+=|=
+[(for: each _reagent, ..._ReagentList)[(print: (str: _reagent))&lt;br&gt;]
+==|==
+RESET(click: &quot;RESET&quot;)[(for: each _reagent, ..._ReagentList)[($ADD_ITEM_TO_INVENTORY: _reagent, 1)]
+(set: _ReagentList to (a:))
+=||=
+(rerun: ?INVENTORY_LIST)
+(rerun: ?REAGENT_LIST)]&lt;br&gt; ]&lt;REAGENT_LIST|
+]
+
+|==|
+[Place candles]&lt;CandleZone|
+(click-rerun:&quot;Place candles&quot;)[
+(replace: ?CandleZone)[You place the candles around the edge of the circle. &lt;br&gt;Light candles
+(click-rerun:&quot;Light candles&quot;)[(replace: &quot;Light candles&quot;)[](append: ?CandleZone)[The candles&#39; flames flicker to and fro.
+(set: _CandlesLit to true)
+(if: _CandlesLit is true)[(link: &quot;Open Spellbook&quot;)[
+$DialogBox[The spells are written in an ancient language.
+||=
+(box:&quot;X&quot;, 5)[(for: each _s, ...$Spellbook)[
+(link-rerun:(str:_s&#39;s SpellName))&lt;br&gt;[(set: _Desc to _s&#39;s Description, _Name to _s&#39;s SpellName)(rerun: ?DESC_SPOT)]]
+]
+=|||
+(if: _Desc is not 0)[(print:_Desc)]]&lt;DESC_SPOT|
+|==|
+**SPEAK SPELL WORD**
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to(prompt: (str:&quot;Cast &quot; + _Name + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:_Name))[(print: (str: &quot;You casted &quot; + _Name +&quot;.&quot;))]
+]
+]
+]
+]]
+]
+]
 </tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
