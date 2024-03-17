@@ -447,14 +447,14 @@ A neighboring farm accuses your farm of using forbidden magic. How do you respon
 
 (link: &quot;Confront them and deny the accusations.&quot;)[]
 (link: &quot;Seek evidence to disprove the accusations.&quot;)[]
-(link: &quot;Keep a low profile and avoid conflict.&quot;)[]</tw-passagedata><tw-passagedata pid="7" name="INSIDE HOME" tags="" position="1100,800" size="200,200">
+(link: &quot;Keep a low profile and avoid conflict.&quot;)[]</tw-passagedata><tw-passagedata pid="7" name="INSIDE HOME" tags="" position="1200,700" size="200,200">
 
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cabin&quot;)]
 
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Cabin&quot;)]
-(if: $PlaceOfResidence is &quot;Cave&quot;) (goto: &quot;Cave&quot;)</tw-passagedata><tw-passagedata pid="8" name="Outside Home" tags="" position="1300,1000" size="100,100">($CYCLE_GAME_TIME:)
+(if: $PlaceOfResidence is &quot;Cave&quot;) (goto: &quot;Cave&quot;)</tw-passagedata><tw-passagedata pid="8" name="Outside Home" tags="" position="1400,900" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is &quot;Cabin&quot;) [(goto: &quot;Outside Cabin&quot;)]
-(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1650,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="1500,1300" size="100,100">($CYCLE_GAME_TIME:)
+(if: $PlaceOfResidence is &quot;Cave&quot;) [(goto: &quot;Outside Cave&quot;)]</tw-passagedata><tw-passagedata pid="9" name="Tailor Upbringing" tags="" position="1650,300" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="Path to Town" tags="" position="1500,1400" size="100,100">($CYCLE_GAME_TIME:)
 (if: $PlaceOfResidence is 0)[(set: $PlaceOfResidence to &quot;Cave&quot;)]
 
 (if: $PlaceOfResidence is &quot;Cave&quot;)[
@@ -536,12 +536,12 @@ The bustling marketplace of Hollow Vale is where the town&#39;s souls come toget
 
 [[Full List of Town Citizens]]
 
-[[Town Center]]</tw-passagedata><tw-passagedata pid="18" name="Story Line - Unearthed Artifact" tags="Artifact" position="1000,1100" size="100,100">(storylet: when $MetStoryConditions contains &quot;Chapter One Started&quot;)
+[[Town Center]]</tw-passagedata><tw-passagedata pid="18" name="Story Line - Unearthed Artifact" tags="Artifact" position="1000,1000" size="100,100">(storylet: when $MetStoryConditions contains &quot;Chapter One Started&quot;)
 (exclusivity:6)
 
 While tending to the garden, you unearth a peculiar artifact—an ancient amulet pulsating with latent magic. Soon after its discovery, strange occurrences intensify around the cabin, suggesting a connection between the artifact and the rising tension in the nearby town. 
 
-As the amulet&#39;s powers reveal themselves, you find yourself drawn into a web of intrigue, dark secrets, and a conspiracy that implicates even the highest echelons of the church.</tw-passagedata><tw-passagedata pid="19" name="The Garden" tags="" position="1000,1000" size="100,100">Player can tend the garden at this location. 
+As the amulet&#39;s powers reveal themselves, you find yourself drawn into a web of intrigue, dark secrets, and a conspiracy that implicates even the highest echelons of the church.</tw-passagedata><tw-passagedata pid="19" name="The Garden" tags="" position="1100,900" size="100,100">Player can tend the garden at this location. 
 
 Tending the garden will give a random chance of revealing the &#39;Unearthed Artifact&#39; story line.
 
@@ -563,8 +563,7 @@ Side-Quest/Sub-Plot: Intrigued by Enora&#39;s enigmatic presence, Melvin discove
 
 [[Neighbors]]</tw-passagedata><tw-passagedata pid="22" name="Glen Thornheight" tags="" position="300,2500" size="200,200">($CYCLE_GAME_TIME:)
 
-(if: visit is 1)[(set: $GlenThornheight to ($INIT_NPC: &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10))
-]
+(if: visit is 1)[]
 
 &lt;!--Glen Thornheight, a seasoned tracker and guide, was raised in the outskirts of Hollow Vale, where the woods served as both playground and teacher. Born into a family with a deep connection to the land, Glen developed an extraordinary ability to navigate the enchanting wilderness that surrounded the town. From a young age, he could interpret the subtle language of the trees, predict the weather by the rustle of leaves, and discern the tracks left by elusive creatures.
 
@@ -627,19 +626,26 @@ There are books here that are worth reading.
 
 (set: $DialogBox to (box: &quot;=XXXX=&quot;, 10))
 
+
+
 &lt;!-- SPELLS --&gt;
 
-(set: $Spell to (dm:&quot;SpellName&quot;, str, &quot;SpellPowerRequired&quot;, num, &quot;Description&quot;, str))
-(set: $Spellbook to (a:(dm:&quot;SpellName&quot;, &quot;Fast Growth&quot;, &quot;SpellPowerRequired&quot;, 1, &quot;Description&quot;, &quot;The first spell and test subject for the spell casting system.&quot;)))
-(set: $ADD_SPELL_TO_SPELLBOOK to (macro: $Spell-type _Spell,[
+
+&lt;!-- $Spell type will not actually be used, as locking type will limit spell variation functionalities. Instead, use this as
+a template class to understand what kinds of things Spells will need and what kinds of effect descriptions
+can be produced through casting them. **Nix, lets have a spell type**--&gt;
+
+(set: $Spell to (dm:&quot;SpellName&quot;, str, &quot;Description&quot;, str, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, num, &quot;MagickColor&quot;, str))
+
+(set: $Spellbook to (a:))
+
+(set: $ADD_SPELL_TO_SPELLBOOK to (macro: dm-type _Spell,[
 (set: $Spellbook to it + (a:_Spell))
 (output:)[]
 ])
 )
 
-(set: $Spell-type $LightningStrike to (dm: &quot;SpellName&quot;, &quot;Lightning Strike&quot;, &quot;SpellPowerRequired&quot;, 2, &quot;Description&quot;, &quot;Call the skies to send a lightning strike towards a target.&quot;))
-($ADD_SPELL_TO_SPELLBOOK: $LightningStrike)
-
+(set: $SpellBeingCast to (dm:))
 
 &lt;!-- GAME TIME --&gt;
 
@@ -731,7 +737,7 @@ There are books here that are worth reading.
 (set: $MetStoryConditions to (a:))
 
 (set: num-type $GameChapter to 6)
-(set: const-type $Antagonist to (either: &quot;Melvin&quot;,&quot;Glen&quot;,&quot;Enora&quot;,&quot;Whiskers&quot;,&quot;Pritchard&quot;))
+(set: const-type $Antagonist to (either: &quot;Mel&quot;,&quot;Glen&quot;,&quot;Enora&quot;,&quot;Whiskers&quot;,&quot;Pritchard&quot;))
 (set: const-type $GuiltyOfWitchcraft to (either: &quot;Glen&quot;, &quot;Enora&quot;, &quot;Michael&quot;, &quot;Sheena&quot;, &quot;Davis&quot;))
 
 &lt;!-- QUESTS --&gt;
@@ -770,18 +776,31 @@ There are books here that are worth reading.
 
 
 &lt;!--NPCs--&gt;
-(set: $npc to (dm: &quot;FirstName&quot;, str, &quot;LastName&quot;, str, &quot;HP&quot;, num, &quot;IsWitch&quot;, bool, &quot;Favor&quot;, num))
-(set: $INIT_NPC to (macro: str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor,[
-(output-data: (dm:&quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor))
+
+&lt;!--NPC type--&gt;
+(set: $npc to (dm: &quot;Name&quot;, str, &quot;FirstName&quot;, str, &quot;LastName&quot;, str, &quot;HP&quot;, num, &quot;IsWitch&quot;, bool, &quot;Favor&quot;, num, &quot;SpellEffects&quot;, array))
+
+(set: $NPC_List to (a:))
+
+&lt;!-- Initialize an NPC by setting its first name, last name, HP, &#39;is witch?&#39; bool value, and favor value--&gt;
+(set: $INIT_NPC to (macro: str-type _fullName, str-type _firstName, str-type _lastName, num-type _hp, bool-type _isWitch, num-type _favor, array-type _se,[
+(set: $NPC_List to it + (a:(dm:&quot;Name&quot;, _fullName, &quot;FirstName&quot;, _firstName, &quot;LastName&quot;, _lastName, &quot;HP&quot;, _hp, &quot;IsWitch&quot;, _isWitch, &quot;Favor&quot;, _favor, &quot;SpellEffects&quot;, _se)))
+(output:)[Successfully initiated _fullName]
 ])
 )
+
+&lt;!-- INITIALIZE ALL NPCS HERE --&gt;
+
+($INIT_NPC: &quot;Glen Thornheight&quot;, &quot;Glen&quot;, &quot;Thornheight&quot;, 100, false, 10, (a:))
+($INIT_NPC: &quot;Mel...&quot;, &quot;Mel&quot;, &quot;...&quot;, 10, false, 25, (a:))
+
 
 &lt;!-- ADDITIONAL FUNCTIONS --&gt;
 
 (set: $JUDGE_SCENE_BRIGHTNESS to (macro: []))
 }
 
-</tw-passagedata><tw-passagedata pid="28" name="Choose Place of Residence" tags="nofooter" position="1300,700" size="100,100">Choose your place of residence:
+</tw-passagedata><tw-passagedata pid="28" name="Choose Place of Residence" tags="nofooter" position="1400,600" size="100,100">Choose your place of residence:
 
 [Cabin in the Neighborhood]&lt;Cabin|
 [Hidden Cave in the Woods]&lt;Cave|
@@ -831,7 +850,6 @@ Rolling out of the simple wooden bed, you feel the coolness of the (text-colour:
 (else-if: $HomeFireLit is true)[(replace: ?FireplaceSpot)[(text-colour:orange)[The soft crackling of the fireplace] and the creaking of the cabin&#39;s timbers accompany the gentle rustling of leaves outside the (text-colour:#613000)+(bg:grey)[door.] ]
 ]
 ]
-
 []&lt;FloorSpot|
 []&lt;TableSpot|
 [A gust of wind carrying the essence of pine and damp earth filters through a slightly ajar window, floating across the (text-colour:#d04343)+(bg:#404040)[floor] with whispers of the world beyond.]&lt;CabinSmellSpot|
@@ -855,14 +873,11 @@ A small (text-colour:white)+(bg:#94612e)[table] rests several steps to the side 
 
 
 ]
-
-
-
-]&lt;!-- END FLOOR --&gt;
+&lt;!-- END FLOOR --&gt;
 (if: visit is &gt;1)[(replace: ?DoorSpot)[(text-colour:#613000)+(bg:grey)[The door] has been weathered by years of exposure to the elements, and bears the scars of time on its sturdy oak surface. 
 [Go Outside]]] 
 []&lt;DoorSpot|
-
+(link-rerun: &quot;Cast a spell&quot;)[(goto:&quot;Cast A Spell&quot;)]
 </tw-passagedata><tw-passagedata pid="30" name="Outside Cabin" tags="" position="1800,1000" size="100,100">($CYCLE_GAME_TIME:)
 
 (if: visit is 1)[Stepping outside, you find the cabin enveloped in the stillness of the morning. The windows, adorned with timeworn shutters, cast a gentle glow from within. The walls, fashioned from rough-hewn timber, stand weathered but resilient against the elements.
@@ -995,7 +1010,7 @@ Concealed in the heart of the woods, the air in your cave carries the scent of e
 (click: &quot;fireplace&quot;)[(goto: &quot;Cave Fireplace&quot;)]
 [[Outside Cave]]
 
-[[Cast A Spell]]</tw-passagedata><tw-passagedata pid="37" name="Casting A Circle Spell" tags="" position="2000,200" size="200,200">Casting a Circle Spell involves 5 steps: 
+[[Cast A Spell]]</tw-passagedata><tw-passagedata pid="37" name="Casting A Circle Spell" tags="" position="2700,1200" size="200,200">Casting a Circle Spell involves 5 steps: 
 
 1. Make a Circle ( Salt, Chalk, etc can be Used )
 2. Place Reagents to Amplify Effect
@@ -1047,8 +1062,7 @@ Then, place any available reagents that will amplify your spell power prior to c
 
 
 
-</tw-passagedata><tw-passagedata pid="40" name="Outside Mel&#39;s Residence" tags="" position="900,2500" size="200,200">(if: visit is 1 or $Mel is empty)[(set: $npc-type $Mel to ($INIT_NPC:&quot;Mel&quot;, &quot;...&quot;, 10, false, 25))]
-[Mel&#39;s cottage description.]&lt;MEL_COTTAGE_DESC|
+</tw-passagedata><tw-passagedata pid="40" name="Outside Mel&#39;s Residence" tags="" position="900,2500" size="200,200">[Mel&#39;s cottage description.]&lt;MEL_COTTAGE_DESC|
 Knock
 
 &lt;!-- CHAPTER 6 --&gt;
@@ -1326,7 +1340,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 
 
 
-</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1400,600" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
+</tw-passagedata><tw-passagedata pid="57" name="Career Choice" tags="" position="1500,500" size="100,100">(set: $CareerChoice to &quot;&quot;, _RERUN to [(rerun:?SECTION1)+(replace:?CONFIRMBUTTON)[CONFIRM]])
 {
 (align:&quot;=&gt;&lt;=&quot;)+(box:&quot;X&quot;, 6)[[After deciding not to read the book of ancient knowledge,` ` ]&lt;QuestionSpace|[you continued your journey, exploring various pursuits in search of your true calling.]&lt;AnswerSpace|]}
 {[]&lt;EFFECTSPOT|}
@@ -1404,7 +1418,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (else:)[
 (replace: ?INTRO_HOOK)[]
 (replace: ?R11)[ []&lt;R21| ]
-(replace: ?YOUR_SPEECH)+(t8n:&#39;fade&#39;)+(t8n-time:1s)[You approach Glen warmly, stating happily, &quot;Hi, Glen! Good (cond: $TimeOfDay is &quot;Morning&quot;, &quot;morning&quot;, $TimeOfDay is &quot;Midday&quot;, &quot;afternoon&quot;, $TimeOfDay is &quot;Evening&quot;, &quot;evening&quot;)!&quot;]
+(replace: ?YOUR_SPEECH)+(t8n:&#39;fade&#39;)+(t8n-time:1s)[&lt;br&gt;You approach Glen warmly, stating happily, &quot;Hi, Glen! Good (cond: $TimeOfDay is &quot;Morning&quot;, &quot;morning&quot;, $TimeOfDay is &quot;Midday&quot;, &quot;afternoon&quot;, $TimeOfDay is &quot;Evening&quot;, &quot;evening&quot;)!&quot;]
 (set: _GlenResponse to &quot;T11&quot;)(show:(hooks-named: _GlenResponse))
 ]
 ]
@@ -1425,7 +1439,7 @@ $DialogTransition(dialog: bind $TheBooksFate,  &quot;After use and study of the 
 (set: _GlenResponse to &quot;T12&quot;)(show:(hooks-named: _GlenResponse))
 ]
 ($INIT_QUEST: &quot;Glen&#39;s First Quest&quot;)
-[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1000,700" size="100,100"> (set: _TotalHoursSlept to 0)
+[ [[Neighbors]] ]&lt;TO_NEIGHBORS| </tw-passagedata><tw-passagedata pid="59" name="Sleep" tags="" position="1100,600" size="100,100"> (set: _TotalHoursSlept to 0)
  Sleep for how long? (dropdown: bind _NumberOfHoursToSleep, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;) hours 
  &lt;br&gt;&#39;[CONFIRM]&#39;(click-rerun:&quot;CONFIRM&quot;)[
 (set: _NumHours to (num: _NumberOfHoursToSleep))
@@ -1470,7 +1484,7 @@ Finish Quest
 
 
 (goto:&quot;Glen Thornheight&quot;)]
-</tw-passagedata><tw-passagedata pid="62" name="Cast A Spell" tags="" position="2000,500" size="100,100">(set: _CandlesLit to false, _Desc to 0, _Name to &quot;&quot;, _ReagentList to (a:))
+</tw-passagedata><tw-passagedata pid="62" name="Cast A Spell" tags="" position="2700,1100" size="100,100">(set: _CandlesLit to false, _Desc to 0, _Name to &quot;&quot;, _ReagentList to (a:))
 (dialog: bind _CircleReagent, &quot;First, make a circle on the ground...&quot;, &quot;Use Ash&quot;, &quot;Use Salt&quot;) 
 
 (if: _CircleReagent is &quot;Ash&quot;)[]
@@ -1511,22 +1525,20 @@ RESET(click: &quot;RESET&quot;)[(for: each _reagent, ..._ReagentList)[($ADD_ITEM
 (if: _CandlesLit is true)[(link: &quot;Open Spellbook&quot;)[
 $DialogBox[The spells are written in an ancient language.
 ||=
-(box:&quot;X&quot;, 5)[(for: each _s, ...$Spellbook)[
-(link-rerun:(str:_s&#39;s SpellName))&lt;br&gt;[(set: _Desc to _s&#39;s Description, _Name to _s&#39;s SpellName)(rerun: ?DESC_SPOT)]]
+(box:&quot;X&quot;, 5)[(for: each _s, ...$Spellbook)[&lt;br&gt;
+(link-rerun:(str:_s&#39;s SpellName))[(set: _Desc to _s&#39;s Description, _Name to _s&#39;s SpellName, $SpellBeingCast to _s)(rerun: ?DESC_SPOT)]]
 ]
 =|||
 (if: _Desc is not 0)[(print:_Desc)]]&lt;DESC_SPOT|
 |==|
-**SPEAK SPELL WORD**
-(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to(prompt: (str:&quot;Cast &quot; + _Name + &quot;?&quot;), &quot;&quot;))
-(if: (uppercase: _CastSpell) matches (uppercase:_Name))[(print: (str: &quot;You casted &quot; + _Name +&quot;.&quot;))]
+(link: &quot;Confirm&quot;)[(goto:  _Name)]
+]
 ]
 ]
 ]
 ]]
-]
-]
-</tw-passagedata><tw-passagedata pid="63" name="Mel&#39;s Hushed Whispers" tags="Mel" position="800,2400" size="100,100">(storylet: when $GameChapter is 6 and $MetStoryConditions does not contain &quot;Chapter One Start&quot;)
+
+</tw-passagedata><tw-passagedata pid="63" name="Mel&#39;s Hushed Whispers" tags="Mel" position="800,2400" size="100,100">(storylet: when $GameChapter is 6 and $MetStoryConditions does not contain &quot;Chapter One Started&quot;)
 (exclusivity: 6)
 (set: _T to (t8n: &quot;fade&quot;) + (t8n-time:3s))
 As you step into Mel&#39;s quaint cottage, you&#39;re immediately enveloped in a kaleidoscope of colors. The walls are adorned with vibrant tapestries depicting fantastical scenes, and shelves overflow with books and trinkets of all shapes and sizes. The air is thick with the scent of herbs and incense, adding to the mystical atmosphere of the room.
@@ -1550,9 +1562,9 @@ Mel&#39;s eyes search yours, a mixture of fear and determination flickering in t
 [(link: &quot;Can you tell me more about this artifact?&quot;)[(replace: ?MoreInfo)+_T[&quot;Can you tell me more about this artifact?&quot; You ask, tilting your head curiously as your eyebrows curve sharply. &lt;br&gt;&lt;br&gt; (if: $LetMelDown is false)[&quot;To be completely honest... I don&#39;t know much about it yet. While I was studying at the library, I came across a text that pointed me to a hidden compartment, underneath the floor. In the compartment, I found the amulet, and an ancient book that I can&#39;t decipher.&quot; Their eyes continue to dart around the room rapidly. &quot;But, If I&#39;m correct, I may know who can help...&quot;] (else:)[Mel shakes their head softly. &quot;No, no, nevermind. Don&#39;t trouble yourself with this anymore. Go and be well, and all things will sort themselves out in time.] ]]]&lt;A3|
 []&lt;Response|
 [
-[(link: &quot;I&#39;m in. We&#39;ll find the other pieces together.&quot;)[(replace: ?Response)+_T[&quot;I&#39;m in. We&#39;ll find the pieces together.&quot; You state confidently, your trust in the combined abilities of yourself and Mel being the foundation of your unwavering certainty. &lt;br&gt;**Charming +1**, **Mel&#39;s Favor +2** (set: $Charming to it +1, $Mel&#39;s Favor to it +2) (replace: ?A2)[] (replace: ?A4)[]]]]&lt;A1|
-[(link: &quot;I&#39;ll help, but we need to be careful.&quot;)[(replace: ?Response)+_T[&quot;I&#39;ll help, but we need to be careful.&quot; You peer cautiously over your shoulder as if someone could be listening at any time as you whisper the words. &lt;br&gt; **Sneaky + 1**, **Mel&#39;s Favor +2**(replace: ?A1)[] (replace: ?A4)[]]]]&lt;A2|
-[(link:&quot;I&#39;m sorry, Mel. I can&#39;t get involved in this.&quot;)[(replace: ?Response)[&quot;I&#39;m sorry, Mel. I can&#39;t get involved in this.&quot; You take a few short steps away slowly. &lt;br&gt;&lt;br&gt;Mel&#39;s head sinks to the floor. &quot;You&#39;re right,&quot; they say softly. &quot;I should have never involved you in such a matter as this to begin with. All hope is not lost, however. I still think I might know who can help...&quot;  &lt;br&gt;**Sneaky + 4**, **Mel&#39;s Favor - 10** (set: $Sneaky to it +4, $Mel&#39;s Favor to it -10, $LetMelDown to true)(replace: ?A1)[] (replace: ?A2)[]]]]&lt;A4| ]&lt;Answers|
+[(link: &quot;I&#39;m in. We&#39;ll find the other pieces together.&quot;)[(replace: ?Response)+_T[&quot;I&#39;m in. We&#39;ll find the pieces together.&quot; You state confidently, your trust in the combined abilities of yourself and Mel being the foundation of your unwavering certainty. &lt;br&gt;&lt;br&gt;**Charming +1**, **Mel&#39;s Favor +2**&lt;br&gt;&lt;br&gt; (set: $Charming to it +1, $Mel&#39;s Favor to it +2) (replace: ?A2)[] (replace: ?A4)[]]]]&lt;A1|
+[(link: &quot;I&#39;ll help, but we need to be careful.&quot;)[(replace: ?Response)+_T[&quot;I&#39;ll help, but we need to be careful.&quot; You peer cautiously over your shoulder as if someone could be listening at any time as you whisper the words. &lt;br&gt;&lt;br&gt; **Sneaky + 1**, **Mel&#39;s Favor +2**&lt;br&gt;&lt;br&gt;(replace: ?A1)[] (replace: ?A4)[]]]]&lt;A2|
+[(link:&quot;I&#39;m sorry, Mel. I can&#39;t get involved in this.&quot;)[(replace: ?Response)[&quot;I&#39;m sorry, Mel. I can&#39;t get involved in this.&quot; You take a few short steps away slowly. &lt;br&gt;&lt;br&gt;Mel&#39;s head sinks to the floor. &quot;You&#39;re right,&quot; they say softly. &quot;I should have never involved you in such a matter as this to begin with. All hope is not lost, however. I still think I might know who can help...&quot; &lt;br&gt; &lt;br&gt;**Sneaky + 4**, **Mel&#39;s Favor - 10**&lt;br&gt;&lt;br&gt; (set: $Sneaky to it +4, $Mel&#39;s Favor to it -10, $LetMelDown to true)(replace: ?A1)[] (replace: ?A2)[]]]]&lt;A4| ]&lt;Answers|
 (set: $MetStoryConditions to it + (a: &quot;Chapter One Started&quot;))
 (click:&quot;who can help&quot;)+(replace:?Answers)[ &quot;Who do you think can help?&quot; You ask. &lt;br&gt;&lt;br&gt; (if: $LetMelDown is not true)[Mel leans in close to you, so close that you can hear their next breath as they arm their speech with another whisper-](else:)[Mel shakes their head softly. &quot;No, no, nevermind. Don&#39;t trouble yourself with this anymore. Go and be well, and all things will sort themselves out in time.]
 (after:time+8s)[(alert: &quot;There is a loud knock on Mel&#39;s door.&quot;, &quot;...&quot;)|Surprise)[&lt;br&gt;**There is a loud knock on Mel&#39;s door.**&lt;br&gt;&lt;br&gt;Mel&#39;s suprise nearly knocks them off their feet. &quot;Oh! You should go. Quickly now, out the back door! I don&#39;t want anyone to have any suspicions. Remember, heed secrecy and &lt;i&gt;don&#39;t tell a soul&lt;/i&gt; about this! Untold chaos! &lt;i&gt; **Don&#39;t tell a soul!**&quot; &lt;/i&gt; &lt;br&gt;&lt;br&gt; You are hurried (link:&quot;out of Mel&#39;s back door&quot;)[(goto:&quot;Out The Back Door&quot;)] quietly and forcibly.](show: ?Surprise)]
@@ -1588,10 +1600,92 @@ Spell Power Level: $PowerLevel</tw-passagedata><tw-passagedata pid="65" name="Jo
 (rerun: ?passage)]
 
 
-}</tw-passagedata><tw-passagedata pid="66" name="Quest List" tags="With-Back-Button" position="400,600" size="100,100">(for: each _Q, ...$PlayerQuests)[(print: _Q&#39;s QuestName) &lt;br&gt;]</tw-passagedata><tw-passagedata pid="67" name="Out The Back Door" tags="" position="800,2500" size="100,100">The back of Mel&#39;s cottage faces a muddy trail that leads back around to the front of their property. You hear Mel&#39;s front door open and close again as Mel welcomes an unknown visitor into their home.
+}</tw-passagedata><tw-passagedata pid="66" name="Quest List" tags="With-Back-Button" position="400,600" size="100,100">
+=|=
+Current Quests
+(for: each _Q, ...$PlayerQuests)[(print: _Q) &lt;br&gt;]
+=|=
+Finished Quests
+(for: each _FQ, ...$FinishedPlayerQuests)[(print: _FQ) &lt;br&gt;]
+|==|
 
+</tw-passagedata><tw-passagedata pid="67" name="Out The Back Door" tags="" position="800,2500" size="100,100">The back of Mel&#39;s cottage faces a muddy trail that leads back around to the front of their property. You hear Mel&#39;s front door open and close again as Mel welcomes an unknown visitor into their home.
+(set: $Sneaky to 18)
 [[Leave-&gt;Neighbors]]
-Stay and eavesdrop</tw-passagedata></tw-storydata>
+|EavesDrop)[ (text-colour:orange)[**$Sneaky Sneaky** ] Stay and eavesdrop?](if: $Sneaky is &gt; 15) [(show: ?EavesDrop)] 
+(click: &quot;eavesdrop&quot;)[=
+Instead of leaving immediately, you decide to do your best to stay silent and try to eavesdrop on Mel&#39;s cottage. An open window on the side of the house gives hope to your plan.
+
+You sneak close to the window, stepping softly and trying to avoid stepping on branches...
+(click: &quot;avoid stepping on branches&quot;)[(if: (random: 1, 40) is &gt; $Sneaky)[You step on a branch, though, and it snaps loudly. (link: &quot;Run off&quot;) [(dialog: &quot;You hurry off, hoping nobody heard you.&quot;)(goto:&quot;Neighbors&quot;)] / (link: &quot;Still stay&quot;)[You crouch low, hoping nobody heard you. Immediately afterwards, someone closes the window.] ](else:)[To your success, you step silently.]](click: &quot;closes the window.&quot;)[You step closer, but can&#39;t hear anything.]
+(click: &quot;success&quot;)+(t8n:&quot;fade&quot;)+(t8n-time:4s)[=As you crouch under the window, you hear a few hushed whispers coming from the other side. You recognize Mel&#39;s voice as they speak.
+[]&lt;Window|
+(enchant: ?Window&#39;s chars, via (t8n-delay:pos * 50)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
+(replace: ?Window)[
+(cond: $Antagonist is &quot;Mel&quot;, &quot;...more than this! Join me or miss your chance...&quot;, &quot; \&quot;...than there is here. The rest of the season should prove to be a warm one. I daresay there&#39;s not much we can do but enjoy the good weather! It&#39;s a good chance...\&quot;&quot;)]
+(click: &quot;chance&quot;)[(dialog: &quot;Someone hurries to the window and closes it.&quot;)[Someone hurries to the window and closes it.]]
+
+
+
+[[Leave-&gt;Neighbors]] </tw-passagedata><tw-passagedata pid="68" name="2day 2 do" tags="" position="100,0" size="100,100">Today To do
+
+Spell interaction w/ npc or environment
+Rework spells</tw-passagedata><tw-passagedata pid="69" name="Lightning Strike" tags="" position="3400,100" size="100,100">You begin to hold in your mind the essence of lightning energy. 
+
+
+**SPEAK SPELL WORD**
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to(prompt: (str:&quot;Cast &quot; + _Name + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:_Name))[
+
+(print: (str: &quot;You casted &quot; + _Name +&quot;.&quot;))]]
+
+As you stand in the dimly lit room of your home, the air crackles with energy, charged from the powerful spell you just cast. Suddenly, a brilliant flash of lightning streaks across the sky outside, illuminating the interior of your home with an otherworldly glow. The hairs on your arms stand on end as you feel the residual energy pulsating through the air.
+
+Despite the strangeness of the situation, a sense of exhilaration washes over you, mingling with the thrill of having successfully wielded such potent magic. With each passing moment, the effects of your spell intensify, filling the air with a palpable sense of anticipation and wonder.
+(if: visit is 1)[As you stand amidst the swirling chaos of your home, you can&#39;t help but marvel at the raw power you command. With a newfound sense of confidence, you eagerly anticipate the adventures that lie ahead, knowing that you are destined for greatness in the world of magic and mystery.]</tw-passagedata><tw-passagedata pid="70" name="Fast Growth" tags="With-Back-Button" position="3500,100" size="100,100">You begin to hold in your mind the essence of the earth and floral growth.
+(set: _target to (dm:), $GreenMagick to 23, $PowerLevel to 1, _tName to &quot;Growth&quot;)
+
+=|=
+(link: &quot;Select Target&quot;)+(box:&quot;X&quot;)[
+	(for: each _n where _n does not match (dm:), ...$NPC_List)[
+	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: _tName to _n&#39;s Name)(rerun: ?C2)]
+	]
+]
+=|=
+[You hold the image of _tName in your mind. ]&lt;C2|
+|==|
+**SPEAK SPELL WORD**
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to (prompt: (str: &quot;Cast &quot;, (str:$SpellBeingCast&#39;s SpellName) + &quot; on &quot; + _tName + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:&quot;fast growth&quot;))[=(replace: ?passage)[=
+(enchant: ?passage&#39;s chars, via (t8n-delay:pos * 30)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
+The candles&#39; flames begin to flicker rapidly.......... 
+(if: $GreenMagick * $PowerLevel is &gt;= $SpellBeingCast&#39;s DifficultyLevel)[(after: time + 5s)[=
+You casted Fast Growth on _tName. 
+(alert: (str: &quot;You casted Fast Growth on &quot; + (str:_target&#39;s Name) + &quot;.&quot;))
+(set: _j to 1)
+(for: each _i, ...$NPC_List)[
+(if: _i&#39;s Name matches _tName)[
+(set: SpellEffects of $NPC_List&#39;s _j to it +(a:&quot;Fast Growth&quot;)) 
+] 
+(set: _j to it +1)
+]
+]
+(if: $GreenMagick * $PowerLevel is &lt; $SpellBeingCast&#39;s DifficultyLevel) [
+(after:time + 5s)[=The spell fizzles and fails.
+(print: (str:&quot;[ Fast Growth&#39;s Difficulty Level: &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel) +&quot; ]&quot;))
+(print: (str:&quot;[ Your Green Magick Skill:  &quot; + (str:$GreenMagick) +&quot; ]&quot; ))
+(print: (str:&quot;[ Your Power Level: &quot; + (str:$PowerLevel) + &quot; ]&quot;))
+(print: (str: &quot;Total Skill Check: &quot; + (str:$GreenMagick * $PowerLevel) + &quot; vs &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel))) 
+]
+]
+
+
+</tw-passagedata><tw-passagedata pid="71" name="Spell List Initialization" tags="startup" position="100,500" size="200,200">&lt;!--LIGHTNING STRIKE--&gt;
+(set: $Spell-type $LightningStrike to (dm: &quot;SpellName&quot;, &quot;Lightning Strike&quot;, &quot;Description&quot;, &quot;Call the skies to send a lightning strike towards a target.&quot;, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, 2, &quot;MagickColor&quot;, &quot;Green&quot;))
+($ADD_SPELL_TO_SPELLBOOK: $LightningStrike)
+&lt;!--FAST GROWTH--&gt;
+(set: $Spell-type $FastGrowth to (dm:&quot;SpellName&quot;, &quot;Fast Growth&quot;, &quot;Description&quot;, &quot;Makes plants grow more quickly.&quot;, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, 1, &quot;MagickColor&quot;, &quot;Green&quot;))
+($ADD_SPELL_TO_SPELLBOOK: $FastGrowth)</tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
