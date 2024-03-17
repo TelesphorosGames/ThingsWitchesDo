@@ -9,7 +9,7 @@
 </head>
 <body>
 <tw-story><noscript><tw-noscript>JavaScript needs to be enabled to play Things Witches Do - Rough 1 ( CONCEPT ).</tw-noscript></noscript></tw-story>
-<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="1" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
+<tw-storydata name="Things Witches Do - Rough 1 ( CONCEPT )" startnode="1" creator="Twine" creator-version="2.5.1" format="Harlowe" format-version="3.3.3" ifid="6D368B74-FBBB-4383-B2BC-A113FAB0A630" options="" tags="" zoom="1" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">tw-sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -627,7 +627,6 @@ There are books here that are worth reading.
 (set: $DialogBox to (box: &quot;=XXXX=&quot;, 10))
 
 
-
 &lt;!-- SPELLS --&gt;
 
 
@@ -635,7 +634,7 @@ There are books here that are worth reading.
 a template class to understand what kinds of things Spells will need and what kinds of effect descriptions
 can be produced through casting them. **Nix, lets have a spell type**--&gt;
 
-(set: $Spell to (dm:&quot;SpellName&quot;, str, &quot;Description&quot;, str, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, num, &quot;MagickColor&quot;, str))
+(set: $Spell to (dm:&quot;SpellName&quot;, str, &quot;Description&quot;, str, &quot;DifficultyLevel&quot;, num, &quot;MagickColor&quot;, str, &quot;MagickCheck&quot;, num))
 
 (set: $Spellbook to (a:))
 
@@ -646,6 +645,73 @@ can be produced through casting them. **Nix, lets have a spell type**--&gt;
 )
 
 (set: $SpellBeingCast to (dm:))
+
+&lt;!-- SPELLCASTING --&gt;
+
+(set: $SELECT_TARGET_BOX to (macro: [
+(link: &quot;Select Target&quot;)+(box:&quot;X&quot;)[
+	(for: each _n where _n does not match (dm:), ...$NPC_List)[
+	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: $SpellTargetName to _n&#39;s Name)(rerun: ?C2)]
+	]
+]
+(output:)[]
+])
+)
+
+
+&lt;!----&gt;
+
+&lt;!-- SPELL CAST TEMPLATE!!! 
+
+(set: _target to (dm:))
+(set: $SpellTargetName to (str: $SpellBeingCast&#39;s MagickColor))
+=|=
+(link: &quot;Select Target&quot;)+(box:&quot;X&quot;)[
+	(for: each _n where _n does not match (dm:), ...$NPC_List)[
+	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: $SpellTargetName to _n&#39;s Name)(rerun: ?C2)]
+	]
+]
+=|=
+[You hold the image of $SpellTargetName in your mind. ]&lt;C2|
+|==|
+**SPEAK SPELL WORD**
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to (prompt: (str: &quot;Cast &quot;, (str:$SpellBeingCast&#39;s SpellName) + &quot; on &quot; + $SpellTargetName + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:(str:$SpellBeingCast&#39;s SpellName))[=(replace: ?passage)[=
+(enchant: ?Flicker&#39;s chars, via (t8n-delay:pos * 30)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
+[The candles&#39; flames begin to flicker rapidly..........]&lt;Flicker|
+
+|End)[(if: _Success is true)[]
+(else:)[]]
+
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &gt;= $SpellBeingCast&#39;s DifficultyLevel)[(after: time + 5s)[=
+You casted (print: $SpellBeingCast&#39;s SpellName) on $SpellTargetName. 
+(alert: (str: &quot;You casted &quot; + $SpellBeingCast&#39;s SpellName + &quot; on &quot; + (str:_target&#39;s Name) + &quot;.&quot;))
+(set: _j to 1)
+(for: each _i, ...$NPC_List)[
+(if: _i&#39;s Name matches $SpellTargetName)[
+(if: SpellEffects of $NPC_List&#39;s (_j) does not contain (a:(str: $SpellBeingCast&#39;s SpellName)) )[
+(set: SpellEffects of $NPC_List&#39;s (_j) to it +(a:(str: $SpellBeingCast&#39;s SpellName)) )
+(set: _Success to true)
+(show: ?End)
+]
+(stop:)
+] 
+(else:)[(set: _j to it +1)]
+]
+]
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &lt; $SpellBeingCast&#39;s DifficultyLevel) [
+(after:time + 5s)[=The spell fizzles and fails.
+(print: (str:&quot;[ &quot; + $SpellBeingCast&#39;s SpellName +&quot; Difficulty Level : &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel) +&quot; ]&quot;))
+&lt;br&gt;(print: (str: &quot;Your Total Skill Check : &quot; + $SpellBeingCast&#39;s MagickColor + &quot; x Power Level = &quot; +  (str: $PowerLevel))) 
+(output-data: false)
+]
+]
+END SPELL CAST TEMPLATE --&gt;
+
+&lt;!--////////--&gt;
+
+
+(set: $SpellTargetName to &quot;Growth&quot;)
 
 &lt;!-- GAME TIME --&gt;
 
@@ -1630,62 +1696,104 @@ You sneak close to the window, stepping softly and trying to avoid stepping on b
 [[Leave-&gt;Neighbors]] </tw-passagedata><tw-passagedata pid="68" name="2day 2 do" tags="" position="100,0" size="100,100">Today To do
 
 Spell interaction w/ npc or environment
-Rework spells</tw-passagedata><tw-passagedata pid="69" name="Lightning Strike" tags="" position="3400,100" size="100,100">You begin to hold in your mind the essence of lightning energy. 
-
-
-**SPEAK SPELL WORD**
-(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to(prompt: (str:&quot;Cast &quot; + _Name + &quot;?&quot;), &quot;&quot;))
-(if: (uppercase: _CastSpell) matches (uppercase:_Name))[
-
-(print: (str: &quot;You casted &quot; + _Name +&quot;.&quot;))]]
-
-As you stand in the dimly lit room of your home, the air crackles with energy, charged from the powerful spell you just cast. Suddenly, a brilliant flash of lightning streaks across the sky outside, illuminating the interior of your home with an otherworldly glow. The hairs on your arms stand on end as you feel the residual energy pulsating through the air.
-
-Despite the strangeness of the situation, a sense of exhilaration washes over you, mingling with the thrill of having successfully wielded such potent magic. With each passing moment, the effects of your spell intensify, filling the air with a palpable sense of anticipation and wonder.
-(if: visit is 1)[As you stand amidst the swirling chaos of your home, you can&#39;t help but marvel at the raw power you command. With a newfound sense of confidence, you eagerly anticipate the adventures that lie ahead, knowing that you are destined for greatness in the world of magic and mystery.]</tw-passagedata><tw-passagedata pid="70" name="Fast Growth" tags="With-Back-Button" position="3500,100" size="100,100">You begin to hold in your mind the essence of the earth and floral growth.
-(set: _target to (dm:), $GreenMagick to 23, $PowerLevel to 1, _tName to &quot;Growth&quot;)
+Rework spells</tw-passagedata><tw-passagedata pid="69" name="Lightning Strike" tags="" position="2900,100" size="100,100">You begin to hold in your mind the essence of lightning energy. 
+(set: $GreenMagick to 1)
+(set: $PowerLevel to 10)
+(set: $SpellBeingCast&#39;s MagickCheck to $GreenMagick)
+(set: _target to (dm:))
+(set: $SpellTargetName to (str: $SpellBeingCast&#39;s MagickColor))
+(set: _Success to false)
 
 =|=
 (link: &quot;Select Target&quot;)+(box:&quot;X&quot;)[
 	(for: each _n where _n does not match (dm:), ...$NPC_List)[
-	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: _tName to _n&#39;s Name)(rerun: ?C2)]
+	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: $SpellTargetName to _n&#39;s Name)(rerun: ?C2)]
 	]
 ]
 =|=
-[You hold the image of _tName in your mind. ]&lt;C2|
+[You hold the image of $SpellTargetName in your mind. ]&lt;C2|
 |==|
 **SPEAK SPELL WORD**
-(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to (prompt: (str: &quot;Cast &quot;, (str:$SpellBeingCast&#39;s SpellName) + &quot; on &quot; + _tName + &quot;?&quot;), &quot;&quot;))
-(if: (uppercase: _CastSpell) matches (uppercase:&quot;fast growth&quot;))[=(replace: ?passage)[=
-(enchant: ?passage&#39;s chars, via (t8n-delay:pos * 30)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
-The candles&#39; flames begin to flicker rapidly.......... 
-(if: $GreenMagick * $PowerLevel is &gt;= $SpellBeingCast&#39;s DifficultyLevel)[(after: time + 5s)[=
-You casted Fast Growth on _tName. 
-(alert: (str: &quot;You casted Fast Growth on &quot; + (str:_target&#39;s Name) + &quot;.&quot;))
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to (prompt: (str: &quot;Cast &quot;, (str:$SpellBeingCast&#39;s SpellName) + &quot; on &quot; + $SpellTargetName + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:(str:$SpellBeingCast&#39;s SpellName)))[=(replace: ?passage)[=
+
+(enchant: ?Flicker&#39;s chars, via (t8n-delay:pos * 30)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
+[The candles&#39; flames begin to flicker rapidly..........]&lt;Flicker|
+
+|End)[(if: _Success is true)[As you stand in the dimly lit room of your home, the air crackles with energy, charged from the powerful spell you just cast. Suddenly, a brilliant flash of lightning streaks across the sky outside, illuminating the interior of your home with an otherworldly glow. The hairs on your arms stand on end as you feel the residual energy pulsating through the air.
+Despite the strangeness of the situation, a sense of exhilaration washes over you, mingling with the thrill of having successfully wielded such potent magic. With each passing moment, the effects of your spell intensify, filling the air with a palpable sense of anticipation and wonder.
+(if: visit is 1)[As you stand amidst the swirling chaos of your home, you can&#39;t help but marvel at the raw power you command. With a newfound sense of confidence, you eagerly anticipate the adventures that lie ahead, knowing that you are destined for greatness in the world of magic and mystery.]]]
+
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &gt;= $SpellBeingCast&#39;s DifficultyLevel)[(after: time + 5s)[=
+You casted (print: $SpellBeingCast&#39;s SpellName) on $SpellTargetName. 
+(alert: (str: &quot;You casted &quot; + $SpellBeingCast&#39;s SpellName + &quot; on &quot; + (str:_target&#39;s Name) + &quot;.&quot;))
 (set: _j to 1)
 (for: each _i, ...$NPC_List)[
-(if: _i&#39;s Name matches _tName)[
-(set: SpellEffects of $NPC_List&#39;s _j to it +(a:&quot;Fast Growth&quot;)) 
+(if: _i&#39;s Name matches $SpellTargetName)[
+(if: SpellEffects of $NPC_List&#39;s (_j) does not contain (a:(str: $SpellBeingCast&#39;s SpellName)) )[
+(set: SpellEffects of $NPC_List&#39;s (_j) to it +(a:(str: $SpellBeingCast&#39;s SpellName)) )
+(set: _Success to true)
+(show: ?End)
+]
+(stop:)
+] 
+(else:)[(set: _j to it +1)]
+]
+]
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &lt; $SpellBeingCast&#39;s DifficultyLevel) [
+(after:time + 5s)[=The spell fizzles and fails.
+(print: (str:&quot;[ &quot; + $SpellBeingCast&#39;s SpellName +&quot; Difficulty Level : &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel) +&quot; ]&quot;))
+&lt;br&gt;(print: (str: &quot;Your Total Skill Check : &quot; + $SpellBeingCast&#39;s MagickColor + &quot; x Power Level = &quot; +  (str: $PowerLevel))) 
+]
+]
+
+</tw-passagedata><tw-passagedata pid="70" name="Fast Growth" tags="With-Back-Button" position="3000,100" size="100,100">You begin to hold in your mind the essence of the earth and floral growth.
+
+(set: $SpellTargetName to &quot;Growth&quot;)
+(set: $GreenMagick to 5)
+(set: $PowerLevel to 2)
+(set: $SpellBeingCast&#39;s MagickCheck to $GreenMagick)
+
+=|=
+(link: &quot;Select Target&quot;)+(box:&quot;X&quot;)[
+	(for: each _n where _n does not match (dm:), ...$NPC_List)[
+	(link-rerun: _n&#39;s Name)[(set: _target to _n)(set: $SpellTargetName to _n&#39;s Name)(rerun: ?C2)]
+	]
+]
+=|=
+[You hold the image of $SpellTargetName in your mind. ]&lt;C2|
+|==|
+**SPEAK SPELL WORD**
+(click-rerun:&quot;SPEAK SPELL WORD&quot;)[(set: _CastSpell to (prompt: (str: &quot;Cast &quot;, (str:$SpellBeingCast&#39;s SpellName) + &quot; on &quot; + $SpellTargetName + &quot;?&quot;), &quot;&quot;))
+(if: (uppercase: _CastSpell) matches (uppercase:(str:$SpellBeingCast&#39;s SpellName)))[=(replace: ?passage)[=
+(enchant: ?passage&#39;s chars, via (t8n-delay:pos * 30)+(t8n-skip:.2s) + (t8n:&#39;fade&#39;))
+The candles&#39; flames begin to flicker rapidly.......... 
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &gt;= $SpellBeingCast&#39;s DifficultyLevel)[(after: time + 5s)[=
+You casted (print: $SpellBeingCast&#39;s SpellName) on $SpellTargetName. 
+(alert: (str: &quot;You casted &quot; + $SpellBeingCast&#39;s SpellName + &quot; on &quot; + (str:_target&#39;s Name) + &quot;.&quot;))
+(set: _j to 1)
+(for: each _i, ...$NPC_List)[
+(if: _i&#39;s Name matches $SpellTargetName)[
+(set: SpellEffects of $NPC_List&#39;s (_j) to it +(a:(str: $SpellBeingCast&#39;s SpellName)) )
 ] 
 (set: _j to it +1)
 ]
 ]
-(if: $GreenMagick * $PowerLevel is &lt; $SpellBeingCast&#39;s DifficultyLevel) [
+(if: $SpellBeingCast&#39;s MagickCheck * $PowerLevel is &lt; $SpellBeingCast&#39;s DifficultyLevel) [
 (after:time + 5s)[=The spell fizzles and fails.
-(print: (str:&quot;[ Fast Growth&#39;s Difficulty Level: &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel) +&quot; ]&quot;))
-(print: (str:&quot;[ Your Green Magick Skill:  &quot; + (str:$GreenMagick) +&quot; ]&quot; ))
-(print: (str:&quot;[ Your Power Level: &quot; + (str:$PowerLevel) + &quot; ]&quot;))
-(print: (str: &quot;Total Skill Check: &quot; + (str:$GreenMagick * $PowerLevel) + &quot; vs &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel))) 
+(print: (str:&quot;[ &quot; + $SpellBeingCast&#39;s SpellName +&quot; Difficulty Level : &quot; + (str:$SpellBeingCast&#39;s DifficultyLevel) +&quot; ]&quot;))
+&lt;br&gt;(print: (str: &quot;Your Total Skill Check : &quot; + $SpellBeingCast&#39;s MagickColor + &quot; x Power Level = &quot; +  (str: $PowerLevel))) 
 ]
 ]
 
 
 </tw-passagedata><tw-passagedata pid="71" name="Spell List Initialization" tags="startup" position="100,500" size="200,200">&lt;!--LIGHTNING STRIKE--&gt;
-(set: $Spell-type $LightningStrike to (dm: &quot;SpellName&quot;, &quot;Lightning Strike&quot;, &quot;Description&quot;, &quot;Call the skies to send a lightning strike towards a target.&quot;, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, 2, &quot;MagickColor&quot;, &quot;Green&quot;))
+(set: $Spell-type $LightningStrike to (dm: &quot;SpellName&quot;, &quot;Lightning Strike&quot;, &quot;Description&quot;, &quot;Call the skies to send a lightning strike towards a target.&quot;, &quot;DifficultyLevel&quot;, 2, &quot;MagickColor&quot;, &quot;Green Magick&quot;, &quot;MagickCheck&quot;, num))
 ($ADD_SPELL_TO_SPELLBOOK: $LightningStrike)
+
 &lt;!--FAST GROWTH--&gt;
-(set: $Spell-type $FastGrowth to (dm:&quot;SpellName&quot;, &quot;Fast Growth&quot;, &quot;Description&quot;, &quot;Makes plants grow more quickly.&quot;, &quot;Hit&quot;, bool, &quot;DifficultyLevel&quot;, 1, &quot;MagickColor&quot;, &quot;Green&quot;))
-($ADD_SPELL_TO_SPELLBOOK: $FastGrowth)</tw-passagedata></tw-storydata>
+(set: $Spell-type $FastGrowth to (dm:&quot;SpellName&quot;, &quot;Fast Growth&quot;, &quot;Description&quot;, &quot;Makes plants grow more quickly.&quot;, &quot;DifficultyLevel&quot;, 1, &quot;MagickColor&quot;, &quot;Green Magick&quot;, &quot;MagickCheck&quot;, num))
+($ADD_SPELL_TO_SPELLBOOK: $FastGrowth)</tw-passagedata><tw-passagedata pid="72" name="Untitled Passage" tags="" position="2900,200" size="100,100"></tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
  * https://github.com/paulmillr/es6-shim
